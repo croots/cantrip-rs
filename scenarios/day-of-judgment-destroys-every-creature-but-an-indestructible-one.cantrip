@@ -1,0 +1,49 @@
+# Day of Judgment destroys all creatures (CR 701.8), both players': Bot1's Llanowar Elves, tapped to pay for it, and
+# Bot2's Ornithopter, an artifact creature. Bot2's Moxen, artifacts that are not creatures, stay, and so does Arwen,
+# Mortal Queen, indestructible from her counter (CR 702.12b).
+
+[Bot1 Deck]
+Forest
+Llanowar Elves
+Plains
+Mox Pearl
+Day of Judgment
+Plains x10
+
+[Bot2 Deck]
+Forest
+Mox Pearl
+Mox Emerald
+Arwen, Mortal Queen
+Ornithopter
+Forest x10
+
+[Actions]
+Bot1.Hand.Forest.Play
+Bot1.Battlefield.Forest.Activate
+Bot1.Hand.Llanowar Elves.Cast
+Bot2.Hand.Forest.Play
+Bot2.Hand.Mox Pearl.Cast
+Bot2.Hand.Mox Emerald.Cast
+Bot2.Hand.Ornithopter.Cast
+Bot2.Battlefield.Forest.Activate
+Bot2.Battlefield.Mox Pearl.Activate
+Bot2.Battlefield.Mox Emerald.Activate
+Bot2.Hand.Arwen, Mortal Queen.Cast
+[T3 Bot1.Main1]
+Bot1.Hand.Plains.Play
+Bot1.Hand.Mox Pearl.Cast
+Bot1.Hand.Day of Judgment.Cast
+Bot1.Battlefield.Forest.Activate
+Bot1.Battlefield.Llanowar Elves.Activate
+Bot1.Battlefield.Plains.Activate
+Bot1.Battlefield.Mox Pearl.Activate
+[T3 Bot1.Main2]
+
+[Expect]
+Turn = 3
+Bot1.Battlefield = Forest; Plains; Mox Pearl
+Bot1.Graveyard = Day of Judgment; Llanowar Elves
+Bot2.Battlefield = Forest; Mox Pearl; Mox Emerald; Arwen, Mortal Queen
+Bot2.Graveyard = Ornithopter
+Stack.Count = 0
