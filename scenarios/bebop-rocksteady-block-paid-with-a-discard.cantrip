@@ -1,0 +1,46 @@
+# The trigger is also on blocking (CR 509.1i): Bot2's Llanowar Elves attack on turn 4 and Bebop & Rocksteady block it.
+# Bot1 discards the Swamp drawn on turn 3 rather than sacrifice; the Elves die in combat.
+
+[Bot1 Deck]
+Swamp
+Sol Ring
+Mox Jet
+Mox Emerald
+Bebop & Rocksteady
+Ornithopter
+Ornithopter
+Swamp x12
+
+[Bot2 Deck]
+Forest
+Llanowar Elves
+Forest x20
+
+[Actions]
+Bot1.Hand.Swamp.Play
+Bot1.Battlefield.Swamp.Activate
+Bot1.Hand.Sol Ring.Cast
+Bot1.Hand.Mox Jet.Cast
+Bot1.Hand.Mox Emerald.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Battlefield.Sol Ring.Activate
+Bot1.Battlefield.Mox Jet.Activate
+Bot1.Battlefield.Mox Emerald.Activate
+Bot1.Hand.Bebop & Rocksteady.Cast
+[T2 Bot2.Main1]
+Bot2.Hand.Forest.Play
+Bot2.Battlefield.Forest.Activate
+Bot2.Hand.Llanowar Elves.Cast
+[T4 Bot2.DeclareAttackers]
+Bot2.Attack(Llanowar Elves)
+Bot1.Block(Bebop & Rocksteady > Llanowar Elves)
+Bot1.Accept
+Bot1.Choose(Swamp)
+[T4 Bot2.Main2]
+
+[Expect]
+Bot1.Hand.Count = 0
+Bot1.Graveyard = Swamp
+Bot2.Graveyard = Llanowar Elves
+Bot1.Battlefield.Bebop & Rocksteady.Damage = 1

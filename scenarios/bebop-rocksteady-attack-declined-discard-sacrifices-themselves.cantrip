@@ -1,0 +1,38 @@
+# Bebop & Rocksteady attack with a card in hand, and Bot1 declines to discard it: a permanent must be sacrificed, and
+# Bebop & Rocksteady are one of the candidates (CR 701.21a). Sacrificed, they leave combat and deal no damage.
+
+[Bot1 Deck]
+Swamp
+Sol Ring
+Mox Jet
+Mox Emerald
+Bebop & Rocksteady
+Ornithopter
+Ornithopter
+Swamp x12
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Swamp.Play
+Bot1.Battlefield.Swamp.Activate
+Bot1.Hand.Sol Ring.Cast
+Bot1.Hand.Mox Jet.Cast
+Bot1.Hand.Mox Emerald.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Battlefield.Sol Ring.Activate
+Bot1.Battlefield.Mox Jet.Activate
+Bot1.Battlefield.Mox Emerald.Activate
+Bot1.Hand.Bebop & Rocksteady.Cast
+[T3 Bot1.DeclareAttackers]
+Bot1.Attack(Bebop & Rocksteady)
+Bot1.Decline
+Bot1.Choose(Bebop & Rocksteady)
+[T3 Bot1.Main2]
+
+[Expect]
+Bot1.Hand = Swamp
+Bot1.Graveyard = Bebop & Rocksteady
+Bot2.Life = 20

@@ -1,0 +1,43 @@
+# Bebop & Rocksteady attack with no card in their controller's hand: the discard cannot be paid (CR 118.12a), so no
+# choice to discard is offered and a permanent is sacrificed. Bot1 empties its hand on turn 1 (Sol Ring, two Moxen and
+# two Ornithopters cast, then Bebop & Rocksteady), plays the turn-3 draw, and attacks; it sacrifices an Ornithopter.
+# The discard prompt the other scenarios answer is the positive control for the refusal.
+
+[Bot1 Deck]
+Swamp
+Sol Ring
+Mox Jet
+Mox Emerald
+Bebop & Rocksteady
+Ornithopter
+Ornithopter
+Swamp x12
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Swamp.Play
+Bot1.Battlefield.Swamp.Activate
+Bot1.Hand.Sol Ring.Cast
+Bot1.Hand.Mox Jet.Cast
+Bot1.Hand.Mox Emerald.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Battlefield.Sol Ring.Activate
+Bot1.Battlefield.Mox Jet.Activate
+Bot1.Battlefield.Mox Emerald.Activate
+Bot1.Hand.Bebop & Rocksteady.Cast
+[T3 Bot1.Main1]
+Bot1.Hand.Swamp.Play
+[T3 Bot1.DeclareAttackers]
+Bot1.Attack(Bebop & Rocksteady)
+! Bot1.Decline
+Bot1.Choose(Ornithopter)
+[T3 Bot1.Main2]
+
+[Expect]
+Bot1.Hand.Count = 0
+Bot1.Graveyard = Ornithopter
+Bot1.Battlefield.Bebop & Rocksteady.Tapped = true
+Bot2.Life = 13

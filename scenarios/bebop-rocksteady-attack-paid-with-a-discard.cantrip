@@ -1,0 +1,39 @@
+# Bebop & Rocksteady attack on turn 3 with the turn-3 draw (a Swamp) still in hand: Bot1 chooses to discard it, so
+# nothing is sacrificed and the 7/5 connects.
+
+[Bot1 Deck]
+Swamp
+Sol Ring
+Mox Jet
+Mox Emerald
+Bebop & Rocksteady
+Ornithopter
+Ornithopter
+Swamp x12
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Swamp.Play
+Bot1.Battlefield.Swamp.Activate
+Bot1.Hand.Sol Ring.Cast
+Bot1.Hand.Mox Jet.Cast
+Bot1.Hand.Mox Emerald.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Battlefield.Sol Ring.Activate
+Bot1.Battlefield.Mox Jet.Activate
+Bot1.Battlefield.Mox Emerald.Activate
+Bot1.Hand.Bebop & Rocksteady.Cast
+[T3 Bot1.DeclareAttackers]
+Bot1.Attack(Bebop & Rocksteady)
+Bot1.Accept
+Bot1.Choose(Swamp)
+[T3 Bot1.Main2]
+
+[Expect]
+Bot1.Hand.Count = 0
+Bot1.Graveyard = Swamp
+Bot1.Battlefield.Ornithopter#2.Tapped = false
+Bot2.Life = 13
