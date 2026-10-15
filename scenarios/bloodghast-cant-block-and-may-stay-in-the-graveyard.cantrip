@@ -1,0 +1,56 @@
+# Bloodghast can't block (CR 509.1b): when Bot2's Llanowar Elves attack on turn 4, Bot1 may not block with it, and its
+# Ornithopter blocking is the positive control. Bot2 then Lightning Bolts Bloodghast, and on turn 5 Bot1's land drop
+# triggers its landfall from the graveyard; returning it is optional, and Bot1 declines, so it stays there.
+
+[Bot1 Deck]
+Swamp
+Swamp
+Bloodghast
+Ornithopter
+Island
+Island
+Island
+Swamp
+Swamp
+Swamp x10
+
+[Bot2 Deck]
+Forest
+Llanowar Elves
+Mountain
+Lightning Bolt
+Forest
+Forest
+Forest
+Forest x20
+
+[Actions]
+Bot1.Hand.Swamp.Play
+Bot1.Hand.Ornithopter.Cast
+[T2 Bot2.Main1]
+Bot2.Hand.Forest.Play
+Bot2.Battlefield.Forest.Activate
+Bot2.Hand.Llanowar Elves.Cast
+[T3 Bot1.Main1]
+Bot1.Hand.Swamp.Play
+Bot1.Battlefield.Swamp#1.Activate
+Bot1.Battlefield.Swamp#2.Activate
+Bot1.Hand.Bloodghast.Cast
+[T4 Bot2.Main1]
+Bot2.Hand.Mountain.Play
+[T4 Bot2.DeclareAttackers]
+Bot2.Attack(Llanowar Elves)
+! Bot1.Block(Bloodghast > Llanowar Elves)
+Bot1.Block(Ornithopter > Llanowar Elves)
+[T4 Bot2.Main2]
+Bot2.Battlefield.Mountain.Activate
+Bot2.Hand.Lightning Bolt.Cast(Bloodghast)
+[T5 Bot1.Main1]
+Bot1.Hand.Swamp.Play
+Bot1.Decline
+[T5 Bot1.Main2]
+
+[Expect]
+Bot1.Graveyard = Bloodghast
+Bot1.Life = 20
+Bot1.Battlefield.Ornithopter.Damage = 0

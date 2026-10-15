@@ -1,0 +1,57 @@
+# Bloodghast's haste is "as long as an opponent has 10 or less life" (CR 611.3a), judged afresh. Bot2 pays 9 life for
+# a Toxic Deluge on turn 2 (X = 9, nothing to kill) and sits at 11: Bloodghast, cast on turn 3, has no haste. Bot1 then
+# Lightning Bolts Bot2 to 8, Bloodghast has haste at once and attacks the turn it was cast.
+
+[Bot1 Deck]
+Swamp
+Mox Ruby
+Bloodghast
+Lightning Bolt
+Swamp
+Island
+Island
+Swamp
+Swamp x10
+
+[Bot2 Deck]
+Swamp
+Sol Ring
+Mox Jet
+Toxic Deluge
+Island
+Island
+Island
+Island x20
+
+[Actions]
+Bot1.Hand.Swamp.Play
+Bot1.Hand.Mox Ruby.Cast
+[T2 Bot2.Main1]
+Bot2.Hand.Swamp.Play
+Bot2.Battlefield.Swamp.Activate
+Bot2.Hand.Sol Ring.Cast
+Bot2.Hand.Mox Jet.Cast
+Bot2.Battlefield.Sol Ring.Activate
+Bot2.Battlefield.Mox Jet.Activate
+Bot2.Hand.Toxic Deluge.Cast(X: 9)
+[T3 Bot1.Main1]
+? Bot2.Life = 11
+Bot1.Hand.Swamp.Play
+Bot1.Battlefield.Swamp#1.Activate
+Bot1.Battlefield.Swamp#2.Activate
+Bot1.Hand.Bloodghast.Cast
+Bot1.Pass
+Bot2.Pass
+? Bot1.Battlefield.Bloodghast.Keywords = CantBlock
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Hand.Lightning Bolt.Cast(Bot2)
+Bot1.Pass
+Bot2.Pass
+? Bot1.Battlefield.Bloodghast.Keywords = CantBlock; Haste
+[T3 Bot1.DeclareAttackers]
+Bot1.Attack(Bloodghast)
+[T3 Bot1.Main2]
+
+[Expect]
+Bot2.Life = 6
+Bot1.Battlefield.Bloodghast.Tapped = true

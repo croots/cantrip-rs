@@ -1,0 +1,61 @@
+# Bloodghast's landfall works from its owner's graveyard (CR 113.6k, 207.2c). Bot1 casts it on turn 3; Bot2's turn-4
+# Toxic Deluge (X = 10) kills it and leaves Bot2 at exactly 10 life. Bot2's own Island entering afterwards is not a land
+# Bot1 controls and triggers nothing. Bot1's turn-5 Swamp does: Bot1 returns Bloodghast, which has haste now that an
+# opponent is at 10 (10 or less, not less than 10) and attacks at once.
+
+[Bot1 Deck]
+Swamp
+Swamp
+Bloodghast
+Swamp
+Island
+Island
+Island
+Swamp
+Swamp
+Swamp x10
+
+[Bot2 Deck]
+Swamp
+Sol Ring
+Mox Jet
+Toxic Deluge
+Island
+Island
+Island
+Island x20
+
+[Actions]
+Bot1.Hand.Swamp.Play
+[T2 Bot2.Main1]
+Bot2.Hand.Swamp.Play
+Bot2.Battlefield.Swamp.Activate
+Bot2.Hand.Sol Ring.Cast
+Bot2.Hand.Mox Jet.Cast
+[T3 Bot1.Main1]
+Bot1.Hand.Swamp.Play
+Bot1.Battlefield.Swamp#1.Activate
+Bot1.Battlefield.Swamp#2.Activate
+Bot1.Hand.Bloodghast.Cast
+[T4 Bot2.Main1]
+Bot2.Battlefield.Sol Ring.Activate
+Bot2.Battlefield.Mox Jet.Activate
+Bot2.Hand.Toxic Deluge.Cast(X: 10)
+Bot2.Pass
+Bot1.Pass
+? Bot1.Graveyard = Bloodghast
+Bot2.Hand.Island.Play
+? Stack.Count = 0
+Bot2.Pass
+? Bot1.Graveyard = Bloodghast
+[T5 Bot1.Main1]
+Bot1.Hand.Swamp.Play
+Bot1.Accept
+[T5 Bot1.DeclareAttackers]
+Bot1.Attack(Bloodghast)
+[T5 Bot1.Main2]
+
+[Expect]
+Bot1.Graveyard.Count = 0
+Bot1.Battlefield.Bloodghast.Tapped = true
+Bot2.Life = 8
