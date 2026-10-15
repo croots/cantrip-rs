@@ -1,0 +1,44 @@
+# Masked Meower's discard is a cost (CR 602.2b, 601.2h): with no card in hand it cannot be paid, so the ability cannot be
+# activated and the Meower stays. Bot1 empties its hand on turn 1; on turn 3 the drawn Plains pays for it (positive
+# control) and Bot1 draws the next card, an Island.
+
+[Bot1 Deck]
+Mountain
+Masked Meower
+Mox Ruby
+Mox Jet
+Mox Pearl
+Mox Sapphire
+Mox Emerald
+Plains
+Island
+Plains x10
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Mountain.Play
+Bot1.Hand.Mox Ruby.Cast
+Bot1.Hand.Mox Jet.Cast
+Bot1.Hand.Mox Pearl.Cast
+Bot1.Hand.Mox Sapphire.Cast
+Bot1.Hand.Mox Emerald.Cast
+Bot1.Battlefield.Mountain.Activate
+Bot1.Hand.Masked Meower.Cast
+Bot1.Pass
+Bot2.Pass
+? Bot1.Hand.Count = 0
+! Bot1.Battlefield.Masked Meower.Activate
+[T3 Bot1.Main1]
+? Bot1.Battlefield.Count = 7
+Bot1.Battlefield.Masked Meower.Activate
+Bot1.Choose(Plains)
+Bot1.Pass
+Bot2.Pass
+[T3 Bot1.Main2]
+
+[Expect]
+Bot1.Hand = Island
+Bot1.Graveyard = Masked Meower; Plains
+Bot1.Battlefield.Count = 6
