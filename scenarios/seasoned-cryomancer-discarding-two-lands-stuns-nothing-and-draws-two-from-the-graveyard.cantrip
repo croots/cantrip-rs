@@ -1,0 +1,64 @@
+# Seasoned Cryomancer: entering, Bot1 draws two cards and discards two Islands - no nonland card - so the reflexive
+# ability never triggers (CR 603.12) and nothing is targeted. Turn 3: Faithless Looting discards the Cryomancer's
+# second copy, drawn by the first. {3}{U}{U} is not offered with three mana; on turn 5, with five, Bot1 exiles that
+# card from its graveyard to draw two cards.
+
+[Bot1 Deck]
+Black Lotus
+Seasoned Cryomancer
+Island
+Island
+Island
+Mox Sapphire
+Mox Ruby
+Faithless Looting
+Seasoned Cryomancer
+Island x11
+
+[Bot2 Deck]
+Island
+Ornithopter
+Island x18
+
+[Actions]
+Bot1.Hand.Island.Play
+Bot1.Hand.Black Lotus.Cast
+Bot1.Battlefield.Black Lotus.Activate(Color: Blue)
+Bot1.Hand.Seasoned Cryomancer.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Pass
+Bot2.Pass
+Bot1.Choose(Island; Island)
+! Bot1.Target
+? Stack.Count = 0
+? Bot1.Hand = Faithless Looting; Mox Ruby; Mox Sapphire; Seasoned Cryomancer
+[T2 Bot2.Main1]
+Bot2.Hand.Ornithopter.Cast
+[T3 Bot1.Main1]
+Bot1.Hand.Island.Play
+Bot1.Hand.Mox Sapphire.Cast
+Bot1.Hand.Mox Ruby.Cast
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Hand.Faithless Looting.Cast
+Bot1.Choose(Seasoned Cryomancer; Island)
+Bot1.Battlefield.Mox Sapphire.Activate
+Bot1.Battlefield.Island.Activate
+Bot1.Battlefield.Island.Activate
+! Bot1.Graveyard.Seasoned Cryomancer.Activate
+[T5 Bot1.Main1]
+Bot1.Hand.Island.Play
+Bot1.Battlefield.Mox Sapphire.Activate
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Battlefield.Island.Activate
+Bot1.Battlefield.Island.Activate
+Bot1.Battlefield.Island.Activate
+Bot1.Graveyard.Seasoned Cryomancer.Activate
+Bot1.Pass
+Bot2.Pass
+[T5 Bot1.Main2]
+
+[Expect]
+Exile = Seasoned Cryomancer
+Bot1.Hand.Count = 3
+Bot2.Battlefield.Ornithopter.Tapped = false

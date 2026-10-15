@@ -1,0 +1,53 @@
+# Seasoned Cryomancer: entering, Bot1 discards Mox Ruby and an Island - one nonland card - so "up to that many target
+# creatures" is up to one: Bot2's Ornithopter and Llanowar Elves cannot both be chosen. Ornithopter is tapped and stunned.
+
+[Bot1 Deck]
+Black Lotus
+Seasoned Cryomancer
+Mox Ruby
+Island
+Island
+Island
+Island
+Island
+Island
+Island x11
+
+[Bot2 Deck]
+Forest
+Black Lotus
+Llanowar Elves
+Ornithopter
+Island
+Island
+Island
+Island x13
+
+[Actions]
+Bot1.Hand.Island.Play
+[T2 Bot2.Main1]
+Bot2.Hand.Forest.Play
+Bot2.Hand.Black Lotus.Cast
+Bot2.Battlefield.Black Lotus.Activate(Color: Green)
+Bot2.Hand.Llanowar Elves.Cast
+Bot2.Hand.Ornithopter.Cast
+[T3 Bot1.Main1]
+Bot1.Hand.Black Lotus.Cast
+Bot1.Battlefield.Black Lotus.Activate(Color: Blue)
+Bot1.Hand.Seasoned Cryomancer.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Pass
+Bot2.Pass
+Bot1.Choose(Mox Ruby; Island)
+! Bot1.Target(Bot2.Battlefield.Llanowar Elves; Bot2.Battlefield.Ornithopter; Together: yes)
+Bot1.Target(Bot2.Battlefield.Ornithopter)
+Bot1.Pass
+Bot2.Pass
+[T3 Bot1.Main2]
+
+[Expect]
+Bot2.Battlefield.Ornithopter.Tapped = true
+Bot2.Battlefield.Ornithopter.Counters.Stun = 1
+Bot2.Battlefield.Llanowar Elves.Tapped = false
+Bot1.Graveyard = Island; Mox Ruby; Black Lotus
