@@ -1,0 +1,50 @@
+# Hardened Academic: "Discard a card: This creature gains lifelink until end of turn." The discard is the cost (CR 602.2b);
+# a card put into the graveyard does not leave it, so the "leave your graveyard" ability stays quiet. With haste it
+# attacks the turn it is cast, flying over Bot2's Llanowar Elves: 2 damage, and Bot1 gains 2. On turn 3 the lifelink has
+# ended (CR 514.2): the attack gains nothing.
+
+[Bot1 Deck]
+Plains
+Mox Ruby
+Hardened Academic
+Plains
+Plains x16
+
+[Bot2 Deck]
+Forest
+Llanowar Elves
+Island x18
+
+[Actions]
+Bot1.Hand.Plains.Play
+Bot1.Hand.Mox Ruby.Cast
+Bot1.Battlefield.Plains.Activate
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Hand.Hardened Academic.Cast
+Bot1.Pass
+Bot2.Pass
+? Bot1.Battlefield.Hardened Academic.Keywords = Flying; Haste
+Bot1.Battlefield.Hardened Academic.Activate
+Bot1.Choose(Plains)
+? Bot1.Graveyard = Plains
+? Stack.Count = 1
+Bot1.Pass
+Bot2.Pass
+? Bot1.Battlefield.Hardened Academic.Keywords = Flying; Haste; Lifelink
+Bot1.Attack(Hardened Academic > Bot2)
+[T1 Bot1.Main2]
+? Bot1.Life = 22
+? Bot2.Life = 18
+[T2 Bot2.Main1]
+Bot2.Hand.Forest.Play
+Bot2.Battlefield.Forest.Activate
+Bot2.Hand.Llanowar Elves.Cast
+[T3 Bot1.Main1]
+? Bot1.Battlefield.Hardened Academic.Keywords = Flying; Haste
+Bot1.Attack(Hardened Academic > Bot2)
+[T3 Bot1.Main2]
+
+[Expect]
+Bot1.Life = 22
+Bot2.Life = 16
+Bot1.Battlefield.Hardened Academic.Power = 2

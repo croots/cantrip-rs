@@ -1,0 +1,74 @@
+# Hardened Academic: "Whenever one or more cards leave your graveyard, put a +1/+1 counter on target creature you
+# control" (CR 603.2c, 603.10a). Bot1 discards three Plains to its lifelink ability. Turn 2: Bot2's Soul-Guide Lantern
+# exiles one of them as it enters (one trigger), then is sacrificed to exile Bot1's graveyard, the other two Plains
+# together (one trigger, not two): the Academic is a 4/3. Turn 3: Bot1's own Lantern exiles Bot2's Lantern from Bot2's
+# graveyard; that is not Bot1's graveyard, and nothing triggers.
+
+[Bot1 Deck]
+Plains
+Mox Ruby
+Hardened Academic
+Soul-Guide Lantern
+Plains
+Plains
+Plains
+Plains x13
+
+[Bot2 Deck]
+Island
+Soul-Guide Lantern
+Island x18
+
+[Actions]
+Bot1.Hand.Plains.Play
+Bot1.Hand.Mox Ruby.Cast
+Bot1.Battlefield.Plains.Activate
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Hand.Hardened Academic.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Battlefield.Hardened Academic.Activate
+Bot1.Choose(Plains)
+Bot1.Battlefield.Hardened Academic.Activate
+Bot1.Choose(Plains)
+Bot1.Battlefield.Hardened Academic.Activate
+Bot1.Choose(Plains)
+? Bot1.Graveyard.Count = 3
+[T2 Bot2.Main1]
+Bot2.Hand.Island.Play
+Bot2.Battlefield.Island.Activate
+Bot2.Hand.Soul-Guide Lantern.Cast
+Bot2.Pass
+Bot1.Pass
+Bot2.Target(Bot1.Graveyard.Plains)
+Bot2.Pass
+Bot1.Pass
+? Bot1.Graveyard.Count = 2
+? Stack.Count = 1
+Bot2.Pass
+Bot1.Pass
+? Bot1.Battlefield.Hardened Academic.Counters.PlusOnePlusOne = 1
+Bot2.Battlefield.Soul-Guide Lantern.Activate(Ability: Exile each)
+Bot2.Pass
+Bot1.Pass
+? Bot1.Graveyard.Count = 0
+? Stack.Count = 1
+Bot2.Pass
+Bot1.Pass
+? Bot1.Battlefield.Hardened Academic.Counters.PlusOnePlusOne = 2
+[T3 Bot1.Main1]
+Bot1.Hand.Plains.Play
+Bot1.Battlefield.Plains.Activate
+Bot1.Hand.Soul-Guide Lantern.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Pass
+Bot2.Pass
+? Stack.Count = 0
+[T3 Bot1.Main2]
+
+[Expect]
+Exile.Count = 4
+Bot1.Battlefield.Hardened Academic.Counters.PlusOnePlusOne = 2
+Bot1.Battlefield.Hardened Academic.Power = 4
+Bot1.Battlefield.Hardened Academic.Toughness = 3
