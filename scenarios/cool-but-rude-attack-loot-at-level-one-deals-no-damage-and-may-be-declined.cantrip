@@ -1,0 +1,49 @@
+# Cool but Rude at level 1. Turn 3: Bot1 casts it and attacks with Ornithopter (power 0); "whenever you attack, you may
+# discard a card. If you do, draw a card" discards Lightning Bolt and draws a Plains. At level 1 the class has no
+# "whenever you discard" ability, so Bot2 stays at 20. Turn 5: Bot1 attacks again and chooses no card, so nothing is
+# discarded and nothing is drawn (the library holds only the turn's draw less).
+
+[Bot1 Deck]
+Mountain
+Ornithopter
+Cool but Rude
+Mountain
+Lightning Bolt
+Mountain
+Mountain
+Plains x13
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Mountain.Play
+Bot1.Hand.Ornithopter.Cast
+[T3 Bot1.Main1]
+Bot1.Hand.Mountain.Play
+Bot1.Battlefield.Mountain.Activate
+Bot1.Battlefield.Mountain.Activate
+Bot1.Hand.Cool but Rude.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Attack(Ornithopter > Bot2)
+Bot1.Pass
+Bot2.Pass
+Bot1.Choose(Lightning Bolt)
+[T3 Bot1.Main2]
+? Bot1.Graveyard = Lightning Bolt
+? Bot1.Hand.Count = 4
+? Bot1.Library.Count = 11
+? Bot2.Life = 20
+[T5 Bot1.Main1]
+Bot1.Attack(Ornithopter > Bot2)
+Bot1.Pass
+Bot2.Pass
+Bot1.Choose()
+[T5 Bot1.Main2]
+
+[Expect]
+Bot1.Graveyard = Lightning Bolt
+Bot1.Hand.Count = 5
+Bot1.Library.Count = 10
+Bot2.Life = 20

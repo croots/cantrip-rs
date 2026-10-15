@@ -1,0 +1,63 @@
+# Cool but Rude at level 2: "whenever you discard a card, this Class deals 2 damage to each opponent" triggers once per
+# card (not "one or more"). Turn 3: Bot1 levels it up, then Faithless Looting discards Lightning Bolt and a Plains
+# together: two triggers, Bot2 to 16. Bot1 then attacks with Ornithopter (power 0) and the attack loot discards a Plains:
+# one more, Bot2 to 14. Turn 4: Bot2 discards two cards to its own Faithless Looting; they are not Bot1's discards, so
+# nothing triggers and Bot1 stays at 20.
+
+[Bot1 Deck]
+Mountain
+Mox Ruby
+Cool but Rude
+Ornithopter
+Faithless Looting
+Mountain
+Lightning Bolt
+Plains x13
+
+[Bot2 Deck]
+Mountain
+Faithless Looting
+Island x18
+
+[Actions]
+Bot1.Hand.Mountain.Play
+Bot1.Hand.Mox Ruby.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Battlefield.Mountain.Activate
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Hand.Cool but Rude.Cast
+[T2 Bot2.Main1]
+Bot2.Hand.Mountain.Play
+[T3 Bot1.Main1]
+Bot1.Hand.Mountain.Play
+Bot1.Battlefield.Mountain.Activate
+Bot1.Battlefield.Mountain.Activate
+Bot1.Battlefield.Cool but Rude.Activate(Ability: Level 2)
+Bot1.Pass
+Bot2.Pass
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Hand.Faithless Looting.Cast
+Bot1.Choose(Lightning Bolt; Plains)
+Bot1.Pass
+Bot2.Pass
+Bot1.Pass
+Bot2.Pass
+? Bot2.Life = 16
+Bot1.Attack(Ornithopter > Bot2)
+Bot1.Pass
+Bot2.Pass
+Bot1.Choose(Plains)
+[T3 Bot1.Main2]
+? Bot2.Life = 14
+? Bot1.Graveyard.Count = 4
+[T4 Bot2.Main1]
+Bot2.Battlefield.Mountain.Activate
+Bot2.Hand.Faithless Looting.Cast
+Bot2.Choose(Island; Island)
+? Stack.Count = 0
+[T4 Bot2.Main2]
+
+[Expect]
+Bot1.Life = 20
+Bot2.Life = 14
+Bot2.Graveyard.Count = 3

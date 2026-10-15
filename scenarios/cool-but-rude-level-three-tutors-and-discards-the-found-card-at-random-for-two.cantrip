@@ -1,0 +1,56 @@
+# Cool but Rude levels only in order: at level 1 "Level 3" is refused, and once at level 2 "Level 2" is refused again.
+# Bot1 empties its hand on turn 1 (moxen, Black Lotus), levels the class to 2 and then 3. "When this Class becomes level
+# 3, search your library for a card, put it into your hand, shuffle, then discard a card at random": Bot1 finds
+# Lightning Bolt, the only card in hand, so the random discard takes it, and the level 2 ability ("whenever you discard
+# a card") deals 2 to Bot2.
+
+[Bot1 Deck]
+Mountain
+Mox Ruby
+Cool but Rude
+Black Lotus
+Mox Jet
+Mox Pearl
+Mox Sapphire
+Plains x6
+Lightning Bolt
+Plains x6
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Mountain.Play
+Bot1.Hand.Mox Ruby.Cast
+Bot1.Hand.Black Lotus.Cast
+Bot1.Hand.Mox Jet.Cast
+Bot1.Hand.Mox Pearl.Cast
+Bot1.Hand.Mox Sapphire.Cast
+Bot1.Battlefield.Mountain.Activate
+Bot1.Battlefield.Mox Jet.Activate
+Bot1.Hand.Cool but Rude.Cast
+Bot1.Pass
+Bot2.Pass
+? Bot1.Hand.Count = 0
+! Bot1.Battlefield.Cool but Rude.Activate(Ability: Level 3)
+Bot1.Battlefield.Black Lotus.Activate(Color: R)
+Bot1.Battlefield.Cool but Rude.Activate(Ability: Level 2)
+Bot1.Pass
+Bot2.Pass
+? Bot1.Battlefield.Cool but Rude.ClassLevel = 2
+! Bot1.Battlefield.Cool but Rude.Activate(Ability: Level 2)
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Battlefield.Cool but Rude.Activate(Ability: Level 3)
+Bot1.Pass
+Bot2.Pass
+Bot1.Search(Lightning Bolt)
+Bot1.Pass
+Bot2.Pass
+[T1 Bot1.Main2]
+
+[Expect]
+Bot1.Battlefield.Cool but Rude.ClassLevel = 3
+Bot1.Hand.Count = 0
+Bot1.Graveyard = Lightning Bolt; Black Lotus
+Bot1.Library.Count = 12
+Bot2.Life = 18
