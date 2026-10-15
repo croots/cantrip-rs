@@ -1,0 +1,45 @@
+# Casey Jones, Vigilante, cast on turn 3, draws three cards. Bot2's turn-4 upkeep is not "your next upkeep": Bot1's
+# hand is untouched there. At Bot1's turn-5 upkeep three of its seven cards are discarded at random (which three is the
+# game's random source, so only the counts are asserted), before the turn's draw. The delayed trigger is used up: on
+# turn 7 nothing more is discarded.
+
+[Bot1 Deck]
+Mountain
+Mox Ruby
+Mountain
+Island
+Island
+Island
+Island
+Casey Jones, Vigilante
+Island x20
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Mountain.Play
+Bot1.Hand.Mox Ruby.Cast
+[T3 Bot1.Main1]
+Bot1.Hand.Mountain.Play
+Bot1.Battlefield.Mountain#1.Activate
+Bot1.Battlefield.Mountain#2.Activate
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Hand.Casey Jones, Vigilante.Cast
+Bot1.Pass
+Bot2.Pass
+? Bot1.Hand.Count = 4
+[T3 Bot1.Main2]
+? Bot1.Hand.Count = 7
+[T4 Bot2.Main1]
+? Bot1.Hand.Count = 7
+? Bot1.Graveyard.Count = 0
+[T5 Bot1.Draw]
+? Bot1.Hand.Count = 5
+? Bot1.Graveyard.Count = 3
+[T7 Bot1.Main1]
+
+[Expect]
+Bot1.Graveyard.Count = 3
+Bot1.Hand.Count = 6
+Bot1.Battlefield.Casey Jones, Vigilante.Power = 4

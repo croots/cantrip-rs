@@ -1,0 +1,47 @@
+# Casey Jones, Vigilante's discard is "three cards at random" (CR 701.9b): with fewer in hand, all of them go. Bot1 casts
+# everything in its opening hand on turn 1 (Lotus Petal and a Mox paying for Casey with the Mountain), so Casey's three
+# draws are its whole hand; it casts the two Ornithopters drawn and keeps the Island, which is all the turn-3 upkeep
+# discards.
+
+[Bot1 Deck]
+Mountain
+Mox Ruby
+Lotus Petal
+Ornithopter
+Ornithopter
+Ornithopter
+Casey Jones, Vigilante
+Ornithopter
+Ornithopter
+Island
+Swamp x20
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Mountain.Play
+Bot1.Hand.Mox Ruby.Cast
+Bot1.Hand.Lotus Petal.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Battlefield.Mountain.Activate
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Battlefield.Lotus Petal.Activate(Color: R)
+Bot1.Hand.Casey Jones, Vigilante.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Pass
+Bot2.Pass
+? Bot1.Hand = Island; Ornithopter; Ornithopter
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+[T3 Bot1.Draw]
+? Bot1.Hand = Swamp
+? Bot1.Graveyard = Island; Lotus Petal
+[T3 Bot1.Main1]
+
+[Expect]
+Bot1.Graveyard = Island; Lotus Petal
+Bot1.Hand = Swamp
