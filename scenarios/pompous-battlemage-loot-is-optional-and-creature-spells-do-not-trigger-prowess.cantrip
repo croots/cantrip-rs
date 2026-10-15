@@ -1,0 +1,51 @@
+# Improvised Act says "You may discard a card. If you do, draw a card." (CR 609.3): declining the discard draws
+# nothing. Prowess triggers only on noncreature spells (CR 702.108a): casting a second Pompous Battlemage leaves the
+# first a 1/1, and the second enters prepared too, with its own copy of Improvised Act in exile.
+
+[Bot1 Deck]
+Mountain
+Pompous Battlemage
+Swamp
+Mountain
+Pompous Battlemage
+Plains
+Plains
+Plains
+Island
+Plains x11
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Mountain.Play
+Bot1.Battlefield.Mountain.Activate
+Bot1.Hand.Pompous Battlemage.Cast
+Bot1.Pass
+Bot2.Pass
+[T3 Bot1.Main1]
+Bot1.Hand.Mountain.Play
+Bot1.Battlefield.Mountain.Activate
+Bot1.Exile.Improvised Act.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Pass
+Bot2.Pass
+Bot1.Choose()
+? Bot1.Graveyard.Count = 0
+? Bot1.Hand = Plains; Plains; Plains; Pompous Battlemage; Swamp
+[T5 Bot1.Main1]
+Bot1.Hand.Plains.Play
+Bot1.Battlefield.Mountain.Activate
+Bot1.Hand.Pompous Battlemage.Cast
+? Stack.Count = 1
+Bot1.Pass
+Bot2.Pass
+? Exile = Improvised Act
+
+[Expect]
+Bot1.Battlefield.Pompous Battlemage#1.Power = 1
+Bot1.Battlefield.Pompous Battlemage#1.Prepared = (absent)
+Bot1.Battlefield.Pompous Battlemage#2.Power = 1
+Bot1.Battlefield.Pompous Battlemage#2.Prepared = true
+Bot1.Graveyard.Count = 0
