@@ -1401,6 +1401,20 @@ impl<'s> Run<'s> {
                     return fail(format!("line {line} says {text} must not be a choice the question allows, but it is"));
                 }
             }
+            // `! Bot1.Target(Grizzly Bears; Llanowar Elves; Together: yes)`: each is a candidate, but the question takes fewer
+            // targets than that ("up to that many"), so the set cannot be chosen as one answer.
+            RequestKind::ChooseTarget { candidates, count, .. } if action.named("Together").is_some() => {
+                let mut chosen = Vec::new();
+                for spec in action.positional() {
+                    match self.target(action, spec.trim(), candidates)? {
+                        Some(t) if !chosen.contains(&t) => chosen.push(t),
+                        _ => return fail(format!("line {line}: {text} proves nothing: {spec} is not another candidate")),
+                    }
+                }
+                if chosen.len() <= *count as usize {
+                    return fail(format!("line {line} says {text} must not be a choice the question allows, but it is"));
+                }
+            }
             RequestKind::ChooseTarget { candidates, .. } => {
                 let everything: Vec<ObjectId> = (0..self.game.state.objects.len() as u32).map(ObjectId).collect();
                 for spec in action.positional() {

@@ -245,6 +245,9 @@ is still answered by the next line, `Bot1.Search()` or another card.
 A target, `! Bot1.Target(Lightning Bolt)`, is checked at that player's next target question and fails if the named object is among its
 candidates; it fails as proving nothing when no such card exists anywhere in the game. It shows a spell or ability cannot target something
 (a creature card, not an instant, in "target creature card in your graveyard"); pair it with the legal target named on the next line.
+With `Together: yes`, `! Bot1.Target(Llanowar Elves; Ornithopter; Together: yes)`, it says instead that those targets, each a
+candidate, cannot be chosen as one answer, because the slot takes fewer ("tap up to that many target creatures" after one nonland
+discard); it fails as proving nothing if one of them is not a candidate. Pair it with the same line, fewer targets or a larger slot.
 
 A mode choice, `! Bot1.Modes(1; 2)`, is checked at that player's next modes question and fails if the question would accept exactly
 those modes (too many for "choose one", a mode that is not eligible): the way to show a spell offers fewer modes than another case
