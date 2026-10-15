@@ -1,0 +1,70 @@
+# Proft, Sinister Mastermind's "{B}, Discard this card: Target creature gets -3/-1 until end of turn", activated from
+# the hand (CR 602.1): Bot1's Ornithopter, 0/2, is -3/1 and lives, and is 0/2 again on turn 3; Bot2's Llanowar Elves
+# dies (CR 704.5f). Turn 9: Yawgmoth's Will lets Bot1 cast spells from the graveyard. The second Proft and six Dark
+# Rituals are seven other cards there, so the first Proft can be cast from it (its ruling: seven other cards).
+
+[Bot1 Deck]
+Swamp
+Ornithopter
+Proft, Sinister Mastermind
+Proft, Sinister Mastermind
+Dark Ritual x3
+Dark Ritual x3
+Yawgmoth's Will
+Swamp x10
+
+[Bot2 Deck]
+Forest
+Llanowar Elves
+Island x18
+
+[Actions]
+Bot1.Hand.Swamp.Play
+Bot1.Hand.Ornithopter.Cast
+Bot1.Battlefield.Swamp.Activate
+Bot1.Hand.Proft, Sinister Mastermind.Activate(Bot1.Battlefield.Ornithopter)
+Bot1.Pass
+Bot2.Pass
+? Bot1.Battlefield.Ornithopter.Power = -3
+? Bot1.Battlefield.Ornithopter.Toughness = 1
+? Bot1.Graveyard = Proft, Sinister Mastermind
+[T2 Bot2.Main1]
+Bot2.Hand.Forest.Play
+Bot2.Battlefield.Forest.Activate
+Bot2.Hand.Llanowar Elves.Cast
+[T3 Bot1.Main1]
+? Bot1.Battlefield.Ornithopter.Power = 0
+? Bot1.Battlefield.Ornithopter.Toughness = 2
+Bot1.Battlefield.Swamp.Activate
+Bot1.Hand.Proft, Sinister Mastermind.Activate(Bot2.Battlefield.Llanowar Elves)
+Bot1.Pass
+Bot2.Pass
+? Bot2.Graveyard = Llanowar Elves
+? Bot1.Graveyard = Proft, Sinister Mastermind; Proft, Sinister Mastermind
+[T9 Bot1.Main1]
+Bot1.Battlefield.Swamp.Activate
+Bot1.Hand.Dark Ritual.Cast
+Bot1.Pass
+Bot1.Hand.Dark Ritual.Cast
+Bot1.Pass
+Bot1.Hand.Dark Ritual.Cast
+Bot1.Pass
+Bot1.Hand.Dark Ritual.Cast
+Bot1.Pass
+Bot1.Hand.Dark Ritual.Cast
+Bot1.Pass
+Bot1.Hand.Dark Ritual.Cast
+Bot1.Pass
+Bot2.Pass
+? Bot1.Graveyard.Count = 8
+Bot1.Hand.Yawgmoth's Will.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Graveyard.Proft, Sinister Mastermind.Cast
+Bot1.Pass
+Bot2.Pass
+
+[Expect]
+Bot1.Battlefield.Proft, Sinister Mastermind.Power = 5
+Bot1.Graveyard.Count = 7
+Bot1.Hand.Count = 0

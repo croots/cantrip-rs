@@ -1,0 +1,68 @@
+# Proft, Sinister Mastermind: "Threshold - You can't cast this spell unless there are seven or more cards in your
+# graveyard" (CR 601.3). Turn 7: six Dark Rituals in Bot1's graveyard and Bot2's own Dark Ritual in Bot2's: six of
+# Bot1's own are not enough, and the opponent's graveyard does not count. The seventh Ritual makes seven, and Proft is
+# cast. Menace (CR 702.110b): on turn 9 one Ornithopter cannot block it alone; two can, and Proft kills both.
+
+[Bot1 Deck]
+Swamp
+Mox Jet
+Proft, Sinister Mastermind
+Dark Ritual x4
+Dark Ritual x3
+Swamp x10
+
+[Bot2 Deck]
+Swamp
+Dark Ritual
+Ornithopter
+Ornithopter
+Island x16
+
+[Actions]
+Bot1.Hand.Swamp.Play
+Bot1.Hand.Mox Jet.Cast
+[T2 Bot2.Main1]
+Bot2.Hand.Swamp.Play
+Bot2.Battlefield.Swamp.Activate
+Bot2.Hand.Dark Ritual.Cast
+Bot2.Pass
+Bot2.Hand.Ornithopter.Cast
+Bot2.Hand.Ornithopter.Cast
+? Bot2.Graveyard = Dark Ritual
+[T7 Bot1.Main1]
+Bot1.Battlefield.Mox Jet.Activate
+Bot1.Battlefield.Swamp.Activate
+Bot1.Hand.Dark Ritual.Cast
+Bot1.Pass
+Bot1.Hand.Dark Ritual.Cast
+Bot1.Pass
+Bot1.Hand.Dark Ritual.Cast
+Bot1.Pass
+Bot1.Hand.Dark Ritual.Cast
+Bot1.Pass
+Bot1.Hand.Dark Ritual.Cast
+Bot1.Pass
+Bot1.Hand.Dark Ritual.Cast
+Bot1.Pass
+Bot2.Pass
+? Bot1.Graveyard.Count = 6
+? Bot2.Graveyard.Count = 1
+! Bot1.Hand.Proft, Sinister Mastermind.Cast
+Bot1.Hand.Dark Ritual.Cast
+Bot1.Pass
+Bot2.Pass
+? Bot1.Graveyard.Count = 7
+Bot1.Hand.Proft, Sinister Mastermind.Cast
+Bot1.Pass
+Bot2.Pass
+? Bot1.Battlefield.Proft, Sinister Mastermind.Power = 5
+[T9 Bot1.Main1]
+Bot1.Attack(Proft, Sinister Mastermind > Bot2)
+! Bot2.Block(Ornithopter#1 > Proft, Sinister Mastermind)
+Bot2.Block(Ornithopter#1 > Proft, Sinister Mastermind; Ornithopter#2 > Proft, Sinister Mastermind)
+[T9 Bot1.Main2]
+
+[Expect]
+Bot2.Life = 20
+Bot2.Battlefield = Swamp
+Bot1.Battlefield.Proft, Sinister Mastermind.Damage = 0
