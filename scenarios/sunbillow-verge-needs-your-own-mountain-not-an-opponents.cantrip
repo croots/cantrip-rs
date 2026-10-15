@@ -1,0 +1,30 @@
+# Sunbillow Verge, "you control" (CR 602.5b): Bot2's Mountain and Plains do not unlock Bot1's {R} ability; Bot1's own
+# Mountain does on turn 5.
+
+[Bot1 Deck]
+Sunbillow Verge
+Island
+Mountain
+Island x17
+
+[Bot2 Deck]
+Mountain
+Plains
+Island x18
+
+[Actions]
+Bot1.Hand.Sunbillow Verge.Play
+[T2 Bot2.Main1]
+Bot2.Hand.Mountain.Play
+[T3 Bot1.Main1]
+! Bot1.Battlefield.Sunbillow Verge.Activate(Ability: {R})
+[T4 Bot2.Main1]
+Bot2.Hand.Plains.Play
+[T5 Bot1.Main1]
+! Bot1.Battlefield.Sunbillow Verge.Activate(Ability: {R})
+Bot1.Hand.Mountain.Play
+Bot1.Battlefield.Sunbillow Verge.Activate(Ability: {R})
+
+[Expect]
+Bot1.Mana = {R}
+Bot1.Battlefield.Sunbillow Verge.Tapped = true

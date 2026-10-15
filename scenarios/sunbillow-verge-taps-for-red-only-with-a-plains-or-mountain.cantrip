@@ -1,0 +1,26 @@
+# Sunbillow Verge: its {R} ability is offered only while you control a Mountain or a Plains (CR 602.5b). Alone, and
+# beside an Island, it makes only {W}, and the Verge itself has no land types; once a Plains is in play it makes {R}.
+
+[Bot1 Deck]
+Sunbillow Verge
+Island
+Plains
+Island x17
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Sunbillow Verge.Play
+! Bot1.Battlefield.Sunbillow Verge.Activate(Ability: {R})
+Bot1.Battlefield.Sunbillow Verge.Activate(Ability: {W})
+? Bot1.Mana = {W}
+[T3 Bot1.Main1]
+Bot1.Hand.Island.Play
+! Bot1.Battlefield.Sunbillow Verge.Activate(Ability: {R})
+[T5 Bot1.Main1]
+Bot1.Hand.Plains.Play
+Bot1.Battlefield.Sunbillow Verge.Activate(Ability: {R})
+
+[Expect]
+Bot1.Mana = {R}
