@@ -1,0 +1,87 @@
+# Case of the Crimson Pulse, solving checked twice (CR 603.4, 719.3a). Turn 1: its enters ability makes Bot1 discard a
+# card of their choice (the Island), then draw two; with cards in hand at the end step the "To solve" ability does not
+# trigger, and on turn 3 the solved upkeep ability does not either. Turn 3: Bot1 empties the hand and "To solve"
+# triggers, but Bot2 answers with Ancestral Recall on Bot1, so as it resolves Bot1 has cards in hand and the Case stays
+# unsolved (no trigger on turn 5's upkeep). Turn 5: emptied again, the Case is solved; on turn 7 the upkeep ability
+# draws two.
+
+[Bot1 Deck]
+Mountain
+Mox Ruby
+Mox Pearl
+Case of the Crimson Pulse
+Ornithopter
+Ornithopter
+Island
+Ornithopter
+Ornithopter
+Ornithopter
+Ornithopter
+Ornithopter
+Ornithopter
+Ornithopter
+Island x10
+
+[Bot2 Deck]
+Island
+Ancestral Recall
+Plains x18
+
+[Actions]
+Bot1.Hand.Mountain.Play
+Bot1.Hand.Mox Ruby.Cast
+Bot1.Hand.Mox Pearl.Cast
+Bot1.Battlefield.Mountain.Activate
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Battlefield.Mox Pearl.Activate
+Bot1.Hand.Case of the Crimson Pulse.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Pass
+Bot2.Pass
+Bot1.Choose(Island)
+? Bot1.Graveyard = Island
+? Bot1.Hand = Ornithopter; Ornithopter; Ornithopter; Ornithopter
+[T1 Bot1.End]
+? Stack.Count = 0
+[T2 Bot2.Main1]
+Bot2.Hand.Island.Play
+[T3 Bot1.Upkeep]
+? Stack.Count = 0
+[T3 Bot1.Main1]
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+[T3 Bot1.End]
+? Stack.Count = 1
+Bot1.Pass
+Bot2.Battlefield.Island.Activate
+Bot2.Hand.Ancestral Recall.Cast(Bot1)
+Bot2.Pass
+Bot1.Pass
+? Bot1.Hand.Count = 3
+Bot2.Pass
+Bot1.Pass
+Bot2.Pass
+? Stack.Count = 0
+[T5 Bot1.Upkeep]
+? Stack.Count = 0
+[T5 Bot1.Main1]
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+[T5 Bot1.End]
+? Stack.Count = 1
+Bot1.Pass
+Bot2.Pass
+[T7 Bot1.Upkeep]
+? Stack.Count = 1
+Bot1.Pass
+Bot2.Pass
+
+[Expect]
+Bot1.Hand = Island; Island
+Bot1.Graveyard = Island

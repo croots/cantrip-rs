@@ -1,0 +1,75 @@
+# Case of the Crimson Pulse. Turn 1: it enters as Bot1's last card in hand, so its enters ability discards nothing and
+# still draws two; Bot1 plays those out too, and at the end step, with no cards in hand and the Case not solved, the "To
+# solve" ability triggers (CR 719.3a) and resolves: the Case is solved (CR 719.3b). Turn 3: the solved upkeep ability
+# triggers (CR 702.169c), discards an empty hand and draws two; Bot1 empties the hand again, but a solved Case's "To
+# solve" no longer triggers at the end step. Turn 5: it draws two from an empty hand again; turn 7: it discards the
+# three Islands in hand, then draws two.
+
+[Bot1 Deck]
+Mountain
+Mox Ruby
+Mox Pearl
+Case of the Crimson Pulse
+Ornithopter
+Ornithopter
+Ornithopter
+Ornithopter
+Ornithopter
+Ornithopter
+Ornithopter
+Ornithopter
+Island x12
+
+[Bot2 Deck]
+Plains x20
+
+[Actions]
+Bot1.Hand.Mountain.Play
+Bot1.Hand.Mox Ruby.Cast
+Bot1.Hand.Mox Pearl.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Battlefield.Mountain.Activate
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Battlefield.Mox Pearl.Activate
+Bot1.Hand.Case of the Crimson Pulse.Cast
+Bot1.Pass
+Bot2.Pass
+? Stack.Count = 1
+Bot1.Pass
+Bot2.Pass
+? Bot1.Hand = Ornithopter; Ornithopter
+? Bot1.Graveyard.Count = 0
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+[T1 Bot1.End]
+? Stack.Count = 1
+Bot1.Pass
+Bot2.Pass
+? Stack.Count = 0
+[T3 Bot1.Upkeep]
+? Stack.Count = 1
+Bot1.Pass
+Bot2.Pass
+? Bot1.Hand = Ornithopter; Ornithopter
+[T3 Bot1.Main1]
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Ornithopter.Cast
+[T3 Bot1.End]
+? Bot1.Hand.Count = 0
+? Stack.Count = 0
+[T5 Bot1.Upkeep]
+Bot1.Pass
+Bot2.Pass
+? Bot1.Hand = Island; Island
+[T7 Bot1.Upkeep]
+? Bot1.Hand.Count = 3
+Bot1.Pass
+Bot2.Pass
+
+[Expect]
+Bot1.Graveyard = Island; Island; Island
+Bot1.Hand = Island; Island
+Bot1.Battlefield = Mountain; Mox Ruby; Mox Pearl; Ornithopter; Ornithopter; Ornithopter; Ornithopter; Ornithopter; Ornithopter; Ornithopter; Ornithopter; Case of the Crimson Pulse
