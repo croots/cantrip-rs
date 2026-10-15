@@ -1,0 +1,92 @@
+# Monument to Endurance: "whenever you discard a card, choose one that hasn't been chosen this turn". Turn 1: Faithless
+# Looting discards two Plains together, two triggers, one for each card (CR 603.2c); the first takes "draw a card" and
+# the second, with that mode spent as it went on the stack (CR 603.3c), "create a Treasure token". The Treasure casts a
+# Masked Meower, whose discard leaves only "each opponent loses 3 life" (taken without asking): Bot2 to 17. A second
+# Meower, off Mox Ruby, discards a fourth card: every mode is spent, so nothing goes on the stack beside the Meower's own
+# ability (CR 700.2). Turn 2: Bot2's own Faithless Looting is not Bot1 discarding, and triggers nothing. Turn 3: the modes are fresh again, and a third Meower's discard drains Bot2 to 14.
+
+[Bot1 Deck]
+Mountain
+Black Lotus
+Monument to Endurance
+Faithless Looting
+Mox Ruby
+Masked Meower
+Masked Meower
+Plains
+Plains
+Plains
+Plains
+Masked Meower
+Plains x8
+
+[Bot2 Deck]
+Mountain
+Faithless Looting
+Island x18
+
+[Actions]
+Bot1.Hand.Mountain.Play
+Bot1.Hand.Black Lotus.Cast
+Bot1.Hand.Mox Ruby.Cast
+Bot1.Battlefield.Black Lotus.Activate(Color: R)
+Bot1.Hand.Monument to Endurance.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Battlefield.Mountain.Activate
+Bot1.Hand.Faithless Looting.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Choose(Plains; Plains)
+Bot1.Modes(Draw a card)
+Bot1.Modes(Create a Treasure)
+Bot1.Pass
+Bot2.Pass
+Bot1.Pass
+Bot2.Pass
+? Bot1.Battlefield.Treasure Token.Subtypes = Treasure
+? Bot1.Hand = Masked Meower; Masked Meower; Plains
+Bot1.Battlefield.Treasure Token.Activate(Color: R)
+Bot1.Hand.Masked Meower.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Battlefield.Masked Meower.Activate
+Bot1.Choose(Plains)
+? Stack.Count = 2
+Bot1.Pass
+Bot2.Pass
+? Bot2.Life = 17
+Bot1.Pass
+Bot2.Pass
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Hand.Masked Meower.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Battlefield.Masked Meower.Activate
+Bot1.Choose(Plains)
+? Stack.Count = 1
+Bot1.Pass
+Bot2.Pass
+? Bot1.Hand = Masked Meower
+[T2 Bot2.Main1]
+Bot2.Hand.Mountain.Play
+Bot2.Battlefield.Mountain.Activate
+Bot2.Hand.Faithless Looting.Cast
+Bot2.Choose(Island; Island)
+? Stack.Count = 0
+? Bot2.Graveyard.Count = 3
+[T3 Bot1.Main1]
+Bot1.Battlefield.Mountain.Activate
+Bot1.Hand.Masked Meower.Cast
+Bot1.Pass
+Bot2.Pass
+Bot1.Battlefield.Masked Meower.Activate
+Bot1.Choose(Plains)
+Bot1.Modes(Each opponent loses)
+Bot1.Pass
+Bot2.Pass
+[T3 Bot1.Main2]
+
+[Expect]
+Bot2.Life = 14
+Bot1.Battlefield = Mountain; Monument to Endurance; Mox Ruby
