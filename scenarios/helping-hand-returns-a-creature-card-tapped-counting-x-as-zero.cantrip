@@ -1,0 +1,39 @@
+# Helping Hand: "Return target creature card with mana value 3 or less from your graveyard to the battlefield tapped."
+# Bot1's Faithless Looting discards Jacked Rabbit ({X}{1}{W}) and Questing Beast (mana value 4). Questing Beast cannot be
+# targeted (CR 115.1, 601.2c); Jacked Rabbit can, since X is 0 for a card in a graveyard (CR 107.3m, and the card's
+# ruling), and it returns tapped (CR 110.5b) as a 1/2 with no +1/+1 counters - X is 0 as it enters, too.
+
+[Bot1 Deck]
+Mox Ruby
+Mox Pearl
+Faithless Looting
+Jacked Rabbit
+Questing Beast
+Helping Hand
+Plains
+Island x13
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Plains.Play
+Bot1.Hand.Mox Ruby.Cast
+Bot1.Hand.Mox Pearl.Cast
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Hand.Faithless Looting.Cast
+Bot1.Choose(Jacked Rabbit; Questing Beast)
+? Bot1.Graveyard.Count = 3
+! Bot1.Hand.Helping Hand.Cast(Bot1.Graveyard.Questing Beast)
+Bot1.Battlefield.Plains.Activate
+Bot1.Hand.Helping Hand.Cast(Bot1.Graveyard.Jacked Rabbit)
+Bot1.Pass
+Bot2.Pass
+[T1 Bot1.Main2]
+
+[Expect]
+Bot1.Battlefield.Jacked Rabbit.Tapped = true
+Bot1.Battlefield.Jacked Rabbit.Power = 1
+Bot1.Battlefield.Jacked Rabbit.Toughness = 2
+Bot1.Graveyard = Helping Hand; Faithless Looting; Questing Beast
+Bot1.Battlefield.Mox Pearl.Tapped = false

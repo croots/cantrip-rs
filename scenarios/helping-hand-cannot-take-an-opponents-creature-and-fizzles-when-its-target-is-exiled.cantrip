@@ -1,0 +1,66 @@
+# Helping Hand: "target creature card ... from your graveyard". Turn 3: Bot1 Bolts Bot2's Llanowar Elves and Faithless
+# Looting discards Jacked Rabbit. Turn 5: the Elves, in Bot2's graveyard, cannot be targeted (CR 115.1); Jacked Rabbit
+# can, and is the positive control. Bot2 answers by sacrificing Soul-Guide Lantern to exile Bot1's graveyard, so as
+# Helping Hand resolves its only target is gone and it does nothing (CR 608.2b): no creature enters for Bot1.
+
+[Bot1 Deck]
+Mox Ruby
+Lightning Bolt
+Faithless Looting
+Jacked Rabbit
+Helping Hand
+Plains
+Mountain
+Island x13
+
+[Bot2 Deck]
+Forest
+Llanowar Elves
+Island
+Soul-Guide Lantern
+Island x16
+
+[Actions]
+Bot1.Hand.Mountain.Play
+Bot1.Hand.Mox Ruby.Cast
+[T2 Bot2.Main1]
+Bot2.Hand.Forest.Play
+Bot2.Battlefield.Forest.Activate
+Bot2.Hand.Llanowar Elves.Cast
+[T3 Bot1.Main1]
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Hand.Lightning Bolt.Cast(Bot2.Battlefield.Llanowar Elves)
+Bot1.Pass
+Bot2.Pass
+? Bot2.Graveyard = Llanowar Elves
+Bot1.Battlefield.Mountain.Activate
+Bot1.Hand.Faithless Looting.Cast
+Bot1.Choose(Jacked Rabbit; Island)
+[T4 Bot2.Main1]
+Bot2.Hand.Island.Play
+Bot2.Battlefield.Island.Activate
+Bot2.Hand.Soul-Guide Lantern.Cast
+Bot2.Pass
+Bot1.Pass
+Bot2.Target(Bot1.Graveyard.Lightning Bolt)
+Bot2.Pass
+Bot1.Pass
+[T5 Bot1.Main1]
+Bot1.Hand.Plains.Play
+Bot1.Battlefield.Plains.Activate
+! Bot1.Hand.Helping Hand.Cast(Bot2.Graveyard.Llanowar Elves)
+Bot1.Hand.Helping Hand.Cast(Bot1.Graveyard.Jacked Rabbit)
+Bot1.Pass
+Bot2.Battlefield.Soul-Guide Lantern.Activate(Ability: Exile each)
+Bot2.Pass
+Bot1.Pass
+? Stack = Helping Hand
+Bot1.Pass
+Bot2.Pass
+[T5 Bot1.Main2]
+
+[Expect]
+Bot1.Battlefield = Mountain; Mox Ruby; Plains
+Bot1.Graveyard = Helping Hand
+Exile = Faithless Looting; Island; Jacked Rabbit; Lightning Bolt
+Bot2.Graveyard = Soul-Guide Lantern; Llanowar Elves
