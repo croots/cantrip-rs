@@ -20,3 +20,9 @@ pub fn recruit(g: &mut dyn Game, player: PlayerId, source: ObjectId) -> Result<(
     }
     Ok(())
 }
+
+/// "[Source's controller] recruits" as an ability's whole effect (CR 701.70a), for the cards that do nothing else with it:
+/// The Queen of Dale, Long Lake Nuisance, Great Gilded Boat and Sound the Trumpets (after its counter) print it.
+pub fn recruit_effect(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    recruit(g, item.controller, item.object)
+}
