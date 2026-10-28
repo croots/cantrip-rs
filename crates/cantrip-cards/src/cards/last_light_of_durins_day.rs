@@ -38,9 +38,8 @@ fn quest(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
     g.end_sentence();
     let you = item.controller;
     let (found, searched_library) = search_hand_and_or_library(g, you, item.object, SearchDestination::Battlefield, Purpose::PutOntoBattlefield, &SEARCH, DRAGON_CARD)?;
-    for dragon in found {
-        g.put_onto_battlefield(dragon, you, false)?;
-    }
+    // "A Dragon card": at most one, from the hand or from the library.
+    if let Some(&dragon) = found.first() { g.put_onto_battlefield(dragon, you, false)?; }
     g.end_sentence();
     if searched_library {
         g.shuffle(you);
