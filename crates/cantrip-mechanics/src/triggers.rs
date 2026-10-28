@@ -803,6 +803,24 @@ pub fn you_cast_a_spell(_: &dyn Query, me: &Asker, event: &Event) -> Option<Fire
     }
 }
 
+const EXTORT: Question = Question::new("Extort", "pay {cost} for extort?", "Each opponent loses 1 life and you gain that much", "Pay {cost}", "Don't pay");
+
+fn extort_effect(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    if g.may_pay(item.controller, item.object, item.object, of_mana(mana("{W/B}")), &EXTORT)? {
+        // CR 702.101a: they gain life equal to the total life lost this way.
+        let lost = g.each_opponent_loses_life(item.controller, 1);
+        g.gain_life(item.controller, lost);
+    }
+    Ok(())
+}
+
+/// Extort (CR 702.101a): "Whenever you cast a spell, you may pay {W/B}. If you do, each opponent loses 1 life and you gain
+/// life equal to the total life lost this way." Each instance triggers separately (CR 702.101b). The Kingpin of Crime
+/// prints it.
+pub const fn extort(text: &'static str) -> AbilityDef {
+    triggered(YOU_CAST_A_SPELL, extort_effect, text)
+}
+
 /// "Whenever you cast a noncreature spell" (CR 603.2): prowess, Displacer Kitten and Dragon's Rage Channeler print it.
 pub fn noncreature_spell_you_cast(q: &dyn Query, me: &Asker, event: &Event) -> Option<Fired> {
     match event {
