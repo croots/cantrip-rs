@@ -630,6 +630,11 @@ impl AbilityDef {
         AbilityDef::Activated(ActivatedDef { plot: true, special_action: true, ..activated(self, "plotting is taken as an activated ability is") })
     }
 
+    /// A power-up ability (CR 702.193a), named as a class by the cards that change its cost.
+    pub const fn power_up(self) -> AbilityDef {
+        AbilityDef::Activated(ActivatedDef { power_up: true, ..activated(self, "only an activated ability is a power-up ability") })
+    }
+
     /// An equip ability (CR 702.6a).
     pub const fn equip(self) -> AbilityDef {
         AbilityDef::Activated(ActivatedDef { equip: true, ..activated(self, "only an activated ability equips") })
