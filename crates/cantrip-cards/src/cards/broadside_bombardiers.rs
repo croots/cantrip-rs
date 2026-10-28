@@ -1,24 +1,8 @@
 use cantrip_api::*;
+use cantrip_mechanics::history::sacrificed_to_pay;
 use cantrip_mechanics::{boast, damage_target};
 use cantrip_mechanics::targets;
 use cantrip_oracle as oracle;
-
-/// The permanent sacrificed to pay for this activation: the sacrifice the history recorded just before the ability was
-/// activated (costs are paid, then the ability is put on the stack as activated, CR 602.2).
-fn sacrificed_to_pay(q: &dyn Query, item: &StackItem) -> Option<ObjectId> {
-    let records = q.history().this_turn();
-    let activated = records.iter().rposition(|r| {
-        matches!(r.event, Event::AbilityActivated { source, ability, .. } if source == item.object && ability == item.ability)
-    })?;
-    records[..activated].iter().rev().find_map(|r| match r.event {
-        Event::ZoneChange { old, from, reason: ZoneReason::Sacrifice, .. }
-            if from.is(ZoneKind::Battlefield) && old != item.object =>
-        {
-            Some(old)
-        }
-        _ => None,
-    })
-}
 
 /// "Broadside Bombardiers deals damage equal to 2 plus the sacrificed permanent's mana value to any target": the
 /// mana value it had as it was sacrificed (CR 608.2h).

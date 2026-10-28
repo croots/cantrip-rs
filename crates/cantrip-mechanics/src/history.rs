@@ -211,6 +211,23 @@ pub fn sacrificed_creatures_power(q: &dyn Query, spell: ObjectId) -> i32 {
         .map_or(0, |creature| q.chars(creature).power.unwrap_or(0) as i32)
 }
 
+/// "The sacrificed [permanent]" of an activated ability (CR 602.2, 608.2h): the permanent sacrificed to pay for the activation of
+/// `item`, found as the last sacrifice from the battlefield the history recorded before the ability was activated (costs are paid
+/// as it is activated, then it goes on the stack). It is read as it last existed on the battlefield: its power or mana value are
+/// the old object's, which `Query::chars` and `Query::mana_value` give from its last-known information. The ability's own source is
+/// never it ("another"). Broadside Bombardiers (its mana value) and Tom, Bert, and William (its power) print it; so do Altar of
+/// Dementia, Bloodshot Cyclops and Airdrop Condor.
+pub fn sacrificed_to_pay(q: &dyn Query, item: &StackItem) -> Option<ObjectId> {
+    let records = q.history().this_turn();
+    let activated = records.iter().rposition(|r| {
+        matches!(r.event, Event::AbilityActivated { source, ability, .. } if source == item.object && ability == item.ability)
+    })?;
+    records[..activated].iter().rev().find_map(|r| match r.event {
+        Event::ZoneChange { old, from, reason: ZoneReason::Sacrifice, .. } if from.is(ZoneKind::Battlefield) && old != item.object => Some(old),
+        _ => None,
+    })
+}
+
 /// "Each creature that convoked it" (CR 702.51c, 109.2): the creatures that convoked `object` (a spell, or the permanent it
 /// became) that are creatures on the battlefield now. A convoker that has since left the battlefield is a new object
 /// wherever it went (CR 400.7), and one that is no longer a creature is not a creature that convoked it (CR 109.2: March of
