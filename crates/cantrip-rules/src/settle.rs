@@ -1192,6 +1192,32 @@ impl Then {
     }
 }
 
+/// Whether anything in the game could trigger on an ability's activation (CR 603.2): a permanent or emblem that could have
+/// such an ability however it was given (`could_have`), a card that has one where it functions off the battlefield (CR 113.6),
+/// or a delayed ability waiting for one. Where none could, the activation of a mana ability - the most frequent event - is only
+/// recorded in the history, not looked at for triggers: nothing it could trigger is left out.
+pub(crate) fn activation_watched(cx: &Cx) -> bool {
+    let cards = cx.cards();
+    let s = cx.s();
+    let listens = |t: &TriggeredDef| t.listens.intersects(EventMask::ABILITY_ACTIVATED);
+    let could = could_have(cx, &cards.activation_triggers, listens);
+    let watched = s.battlefield().iter().chain(s.zone(Zone::COMMAND)).any(|&id| could(id))
+        || s.delayed.iter().any(|d| d.when.is_event() && matches!(cards.ability(d.ability), AbilityDef::Triggered(t) if listens(t)))
+        || s.seats().any(|p| [Zone::hand(p), Zone::graveyard(p), Zone::exile(p), Zone::library(p)].into_iter().any(|z| s.zone(z).iter().any(|&id| cards.activation_triggers[s.obj(id).card.0 as usize])))
+        || s.zone(Zone::STACK).iter().any(|&id| cards.activation_triggers[s.obj(id).card.0 as usize]);
+    // With `CANTRIP_VERIFY`: a permanent left out has no such ability now - a way of giving one that the guard misses is found
+    // here, not as a trigger that silently never comes.
+    if !watched && layers::verifying() {
+        for &id in s.battlefield().iter().chain(s.zone(Zone::COMMAND)) {
+            assert!(
+                !cx.chars(id).abilities().any(|a| matches!(cards.ability(a), AbilityDef::Triggered(t) if listens(t))),
+                "{id:?} has an ability that triggers on an activation that nothing counted as able to give it (CR 603.2)"
+            );
+        }
+    }
+    watched
+}
+
 /// Which permanents could have a triggered ability of a kind now (`kind`), `table` saying which cards could of their own
 /// (`CardTable::look_back`, `CardTable::mana_triggers`): a superset of those that have one, which the caller then looks at
 /// through the layers. Every way the layers give an object an ability counts (CR 613.1): its copiable values (layer 1: its

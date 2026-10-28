@@ -3436,6 +3436,10 @@ pub struct CardTable {
     /// themselves. With every other way an ability is given (`settle::could_have`), the permanents looked at when a
     /// permanent is tapped for mana.
     pub mana_triggers: Vec<bool>,
+    /// Which cards could have a triggered ability that listens for an ability being activated (`EventMask::ABILITY_ACTIVATED`),
+    /// as `mana_triggers` says for triggered mana abilities. With every other way an ability is given (`settle::could_have`),
+    /// what decides whether a mana ability's activation is looked at for triggers at all (`settle::activation_watched`).
+    pub activation_triggers: Vec<bool>,
     /// Per card: the fused split spell's target specs of a split card with fuse (CR 702.102b: the left half's, then the right
     /// half's), made once as the table is.
     pub fused_targets: Vec<Option<&'static [TargetSpec]>>,
@@ -3706,6 +3710,13 @@ impl CardTable {
                     || c.statics.iter().any(|s| s.own && s.layer == Layer::Ability)
             })
             .collect();
+        let activation_triggers: Vec<bool> = cards
+            .iter()
+            .map(|c| {
+                c.abilities.iter().chain(c.delayed).any(|a| matches!(a, AbilityDef::Triggered(t) if t.listens.intersects(EventMask::ABILITY_ACTIVATED)))
+                    || c.statics.iter().any(|s| s.own && s.layer == Layer::Ability)
+            })
+            .collect();
         let state_triggers: Vec<bool> = cards
             .iter()
             .map(|c| c.abilities.iter().chain(c.delayed).any(|a| matches!(a, AbilityDef::Triggered(t) if t.state.is_some())))
@@ -3761,6 +3772,7 @@ impl CardTable {
             targeting_rules,
             player_keywords,
             mana_triggers,
+            activation_triggers,
             fused_targets,
             state_triggers,
             ability_grants,
@@ -3820,6 +3832,7 @@ impl CardTable {
                 table.look_back[front] |= triggered(TriggeredDef::may_look_back);
                 table.state_triggers[front] |= triggered(|t| t.state.is_some());
                 table.mana_triggers[front] |= triggered(|t| t.mana_ability);
+                table.activation_triggers[front] |= triggered(|t| t.listens.intersects(EventMask::ABILITY_ACTIVATED));
                 let ids = (table.find(left.name), table.find(right.name));
                 table.halves[front] = Some((ids.0.expect("a door is in the card table"), ids.1.expect("a door is in the card table")));
                 // Both doors are printed on the Room card (CR 607.1, 709.5).
