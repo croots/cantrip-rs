@@ -5132,7 +5132,7 @@ fn land_rules(cx: &Cx, player: PlayerId) -> LandRules {
         PlayRule::LibraryTop | PlayRule::LibraryTopLands => {
             rules.top_lands.push(Grant { object: source, ability });
         }
-        PlayRule::LibraryTopSpells(_) | PlayRule::NoMaximumHandSize | PlayRule::LookAtLibraryTop | PlayRule::While(..) => {}
+        PlayRule::LibraryTopSpells(_) | PlayRule::NoMaximumHandSize | PlayRule::MaximumHandSize(_) | PlayRule::LookAtLibraryTop | PlayRule::While(..) => {}
     });
     // "You may play an additional land this turn" (CR 305.2, 611.2c): an effect a resolved spell or ability made, added to
     // the rest - the number a player can play is the sum of everything that increases it.
@@ -5155,6 +5155,24 @@ pub fn no_maximum_hand_size(cx: &Cx, player: PlayerId) -> bool {
     let mut none = false;
     each_play_rule(cx, cx.cards(), player, true, |_, rule| none |= matches!(rule, PlayRule::NoMaximumHandSize));
     none
+}
+
+/// `player`'s maximum hand size (CR 402.2): seven unless a permanent they control says otherwise, the newest of those that
+/// do deciding (CR 613.7), and `None` when they have no maximum.
+pub fn maximum_hand_size(cx: &Cx, player: PlayerId) -> Option<u32> {
+    if no_maximum_hand_size(cx, player) {
+        return None;
+    }
+    let mut set: Option<(u32, u32)> = None;
+    each_play_rule(cx, cx.cards(), player, true, |source, rule| {
+        if let PlayRule::MaximumHandSize(n) = rule {
+            let stamp = cx.s().obj(source).timestamp;
+            if set.is_none_or(|(at, _)| stamp >= at) {
+                set = Some((stamp, *n));
+            }
+        }
+    });
+    Some(set.map_or(7, |(_, n)| n))
 }
 
 /// Whether `player` may look at the top card of their library any time (CR 401.2): a permanent they control says so (Bolas's

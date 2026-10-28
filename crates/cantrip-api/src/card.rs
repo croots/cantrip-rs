@@ -2593,6 +2593,9 @@ pub enum PlayRule {
     While(Condition, &'static [PlayRule]),
     /// "You have no maximum hand size" (CR 402.2): Proft's Eidetic Memory.
     NoMaximumHandSize,
+    /// "Your maximum hand size is N" (CR 402.2): The Ten Rings. It sets the number the default seven is, the one from the
+    /// newest permanent winning when several say so (CR 613.7).
+    MaximumHandSize(u32),
 }
 
 /// What else may pay a spell's total cost besides mana (CR 601.2f-h): convoke (CR 702.51a), delve (CR 702.66a) and
