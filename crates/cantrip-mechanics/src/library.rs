@@ -78,6 +78,39 @@ pub fn find_to_top(g: &mut dyn Game, player: PlayerId, source: ObjectId, rule: S
     Ok(found)
 }
 
+/// "Search your hand and/or library for [`rule`]" (CR 701.23, 701.23a-b): the cards found, and whether the library was
+/// searched, for the "if you search your library this way, shuffle" that follows. The two zones are the player's to choose
+/// between, either or both: a hand is no hidden zone to its owner, so searching it asks nothing but which card the rule lets
+/// them take from it (none being allowed, and no question at all when no card there fits); the library is searched only if
+/// the player accepts `ask` (`ask_may_search`, a search the effect can't cause being none), as `search` does for `destination`,
+/// and the one card of "a [quality] card" is found in one zone or the other, so a library searched after a card was taken from
+/// the hand takes none (it is still searched, and shuffled). The cards are left where they were found for the caller to move.
+/// Last Light of Durin's Day (a Dragon card, onto the battlefield) and Aether Searcher (a card with a noted name, cast) print it.
+pub fn search_hand_and_or_library(
+    g: &mut dyn Game,
+    player: PlayerId,
+    source: ObjectId,
+    destination: SearchDestination,
+    purpose: Purpose,
+    ask: &'static Question,
+    rule: Selection,
+) -> Result<(Vec<ObjectId>, bool), Suspend> {
+    let hand = g.state().zone(Zone::hand(player)).to_vec();
+    let from_hand = if cantrip_api::select::first_answer(&*g, &rule, player, source, &hand, true).is_some_and(|taken| !taken.is_empty()) {
+        crate::choose::select(g, player, source, purpose, hand, rule.clone())?
+    } else {
+        Vec::new()
+    };
+    let searched = ask_may_search(g, player, source, ask)?;
+    let from_library = if searched {
+        let rule = if from_hand.is_empty() { rule } else { rule.taking(Count::UpTo(0)) };
+        search(g, player, player, source, destination, rule)?
+    } else {
+        Vec::new()
+    };
+    Ok((from_hand.into_iter().chain(from_library).collect(), searched))
+}
+
 /// The cards found put into the hand, by the instruction that reveals them when the search says "reveal it" (CR 701.20a:
 /// `Game::move_together_revealed`).
 fn into_hand(g: &mut dyn Game, player: PlayerId, found: &[ObjectId], revealed: bool) -> Vec<ObjectId> {
