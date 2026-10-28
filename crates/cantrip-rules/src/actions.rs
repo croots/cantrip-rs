@@ -8872,12 +8872,12 @@ fn activate_mana_as(
         cx.st().update_obj(source, |o| o.x = n);
     }
     note_activation(cx, source, index as usize, def);
-    // A mana ability is activated (CR 605.3) as any ability is, and the history says so. It is not emitted: the cards here
-    // that trigger on activations name loyalty abilities or abilities that aren't mana abilities; one that triggers on a
-    // mana ability's activation too ("an ability of a creature": Elrond, Moon-Reader) needs it emitted, its trigger
-    // waiting for the next time a player would receive priority (CR 603.3).
+    // A mana ability is activated (CR 605.3) as any ability is, and the history says so. It is emitted too: "whenever you
+    // activate an ability of a creature" (Elrond, Moon-Reader) triggers on a mana ability's activation (its ruling), the
+    // trigger waiting for the next time a player would receive priority (CR 603.3); the abilities that mean only the ones
+    // that use the stack ask `ActivatedDef::is_mana_ability` of it themselves.
     let granted = Grant::of(granted_by(cx, source, None, index as usize, ability, &std::cell::OnceCell::new()));
-    cx.record(Event::AbilityActivated { source, ability, player, by: granted });
+    cx.emit(Event::AbilityActivated { source, ability, player, by: granted });
     // {T} is paid on the permanent before any other part of the cost moves it (CR 605.3a, 601.2h, 118.3): see `activate`.
     if def.cost.tap {
         ops::tap(cx, source);
