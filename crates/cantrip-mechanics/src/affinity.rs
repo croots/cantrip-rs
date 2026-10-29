@@ -37,3 +37,13 @@ pub fn for_creature_type<const TYPE: u16>(q: &dyn Query, source: ObjectId, playe
     let creatures = q.permanents_of(player).into_iter().filter(|&id| q.chars(id).has_subtype(wanted)).count();
     CostDelta::less(creatures.min(255) as u8)
 }
+
+/// "This spell costs {1} less to cast for each instant and sorcery card in your graveyard" (CR 601.2f, 118.7a): counted as
+/// the cost is determined, the cards as they are in the graveyard. Not affinity, but the same shape: a cost reduction that
+/// counts a pool of yours. Eddymurk Crab and The Dawning Archaic print it.
+pub fn for_instants_and_sorceries_in_your_graveyard(q: &dyn Query, _: ObjectId, player: PlayerId, costed: Costed, _: &[Target]) -> CostDelta {
+    // Only the cost of casting it: it has no abilities to activate, and "this spell" is a spell.
+    let spell = matches!(costed, Costed::Spell(_));
+    let cards = q.state().zone(Zone::graveyard(player)).iter().filter(|&&id| spell && (q.chars(id).is(CardType::Instant) || q.chars(id).is(CardType::Sorcery))).count();
+    CostDelta::less(cards.min(255) as u8)
+}
