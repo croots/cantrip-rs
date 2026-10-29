@@ -59,6 +59,12 @@ pub fn permanent_left_battlefield_this_turn(q: &dyn Query, player: PlayerId) -> 
         .any(|r| matches!(r.event, Event::ZoneChange { old, .. } if q.obj(old).controller == player))
 }
 
+/// Disappear (CR 207.2c): "if a permanent left the battlefield under your control this turn", the same question revolt asks,
+/// so the same answer. Foot Mystic, Insectoid Exterminator, Lord Dregg, Insect Invader and Rat King print it.
+pub fn disappear(q: &dyn Query, player: PlayerId) -> bool {
+    permanent_left_battlefield_this_turn(q, player)
+}
+
 /// The number of permanents `player` has sacrificed this turn (CR 701.21a): every permanent that went from the battlefield to a
 /// graveyard as a sacrifice this turn, token or not, under that player's control as it left. Asked of the history (CR 603.10a).
 /// Obsessive Pursuit counts them; Phoenix Fleet Airship asks whether there was one ("if you sacrificed a permanent this turn").
