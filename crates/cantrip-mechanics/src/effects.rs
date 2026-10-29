@@ -1259,9 +1259,8 @@ pub fn plus_one_counter_on_target(g: &mut dyn Game, item: &StackItem) -> Result<
 /// in the graveyard (CR 608.2b), put onto the battlefield untapped as a new object under the ability's controller. Nothing if it
 /// is gone. Moment of Reckoning, Primary Research, Recurring Nightmare, Restoration Seminar and Unearth print it.
 pub fn return_target_card_to_battlefield(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    if let Some(card) = crate::targets::object(g, item, 0) {
-        g.put_onto_battlefield(card, item.controller, false)?;
-    }
+    let Some(card) = crate::targets::object(g, item, 0) else { return Ok(()) };
+    g.put_onto_battlefield(card, item.controller, false)?;
     Ok(())
 }
 
