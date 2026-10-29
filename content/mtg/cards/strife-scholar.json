@@ -1,0 +1,14 @@
+{
+  "name": "Strife Scholar",
+  "manaCost": "{2}{R}",
+  "type": "Creature — Orc Sorcerer",
+  "power": 3,
+  "toughness": 2,
+  "oracleText": "Ward—Pay 2 life. (Whenever this creature becomes the target of a spell or ability an opponent controls, counter it unless that player pays 2 life.)\nThis creature enters prepared.",
+  "prepare": {
+    "name": "Awaken the Ages",
+    "manaCost": "{5}{R}",
+    "type": "Sorcery",
+    "oracleText": "Create two 2/2 red and white Spirit creature tokens."
+  }
+}
