@@ -1247,3 +1247,12 @@ pub fn plus_one_counter_on_target(g: &mut dyn Game, item: &StackItem) -> Result<
     g.add_counters(object, CounterKind::PlusOne, 1);
     Ok(())
 }
+
+/// "Put two +1/+1 counters on target creature" (CR 122.1a, 608.2b), the first target still legal on resolution; with none chosen
+/// (an "up to one" slot) or none legal nothing is put on. Room of Refuge, Trash the Town, Silverquill Charm and Render Speechless
+/// print it.
+pub fn two_plus_one_counters_on_target(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    let Some(object) = crate::targets::object(g, item, 0) else { return Ok(()) };
+    g.add_counters(object, CounterKind::PlusOne, 2);
+    Ok(())
+}
