@@ -1,6 +1,7 @@
 # Bot1's Ornithopter attacks unblocked; in the declare blockers step Bot1 casts Splinter's Technique for {1}{B} (Mox Jet and
 # Mox Ruby, the pool left empty), returning the Ornithopter to hand. As a sorcery it enters nothing: it searches the library for
-# Black Lotus, which goes to the hand, then shuffles, and is put in the graveyard. Bot2's library is not searched.
+# Black Lotus, which goes to the hand, then shuffles, and is put in the graveyard. Its text says "put that card into your hand", not
+# "reveal", so no card is revealed (Revealed is absent for both players). Bot2's library is not searched.
 
 [Bot1 Deck]
 Mox Jet
@@ -30,7 +31,9 @@ Bot1.Battlefield.Mox Ruby.Activate
 Bot1.Pass
 Bot2.Pass
 Bot1.Search(Black Lotus)
-? Bot1.Mana = 
+? Bot1.Revealed = (absent)
+? Bot2.Revealed = (absent)
+? Bot1.Mana =
 [T3 Bot1.Main2]
 
 [Expect]
