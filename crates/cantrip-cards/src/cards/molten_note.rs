@@ -4,11 +4,8 @@ use cantrip_oracle as oracle;
 
 /// "Molten Note deals damage to target creature equal to the amount of mana spent to cast this spell. Untap all creatures you
 /// control": the mana spent (CR 601.2h) is everything paid for the spell, X, colored and any flashback cost alike, read from the
-/// spell's own object. With the one target illegal the spell does nothing (CR 608.2b), so nothing untaps.
+/// spell's own object. With the one target illegal the spell is not resolved at all (CR 608.2b), so nothing untaps.
 fn effect(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    if targets::object(g, item, 0).is_none() {
-        return Ok(());
-    }
     let spent = g.obj(item.object).spent.total();
     damage_target(g, item, 0, spent as u16);
     for creature in g.permanents_of(item.controller) {
