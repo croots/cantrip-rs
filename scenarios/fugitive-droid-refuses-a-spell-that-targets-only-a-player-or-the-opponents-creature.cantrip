@@ -32,6 +32,7 @@ Bot2.Hand.Lightning Bolt.Cast(Bot1)
 Bot2.Pass
 Bot1.Battlefield.Mox Sapphire.Activate
 ! Bot1.Battlefield.Fugitive Droid.Activate(Stack.Lightning Bolt)
+! Bot1.Battlefield.Fugitive Droid.Activate(Bot1)
 Bot1.Pass
 Bot2.Pass
 ? Bot1.Life = 17
