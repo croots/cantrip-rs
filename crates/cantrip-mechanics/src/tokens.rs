@@ -213,7 +213,8 @@ pub fn create_map(g: &mut dyn Game, controller: PlayerId) -> Result<(), Suspend>
     Ok(())
 }
 
-fn gain_three_life(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+/// "You gain 3 life" (CR 119.3): the Food token's, and the Food artifact cards' (Guac & Marshmallow Pizza).
+pub fn gain_three_life(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
     g.gain_life(item.controller, 3);
     Ok(())
 }
@@ -437,6 +438,13 @@ pub fn create_heartwood(g: &mut dyn Game, controller: PlayerId) -> Result<(), Su
 pub fn create(g: &mut dyn Game, controller: PlayerId, def: &'static CardDef, count: u32) -> Result<Vec<ObjectId>, Suspend> {
     let def = g.card_id(def);
     g.create_tokens(def, controller, count, false)
+}
+
+/// "Create a Mutagen token" (CR 111.10): as a triggered or spell's effect. Crustacean Commando, Ray Fillet, Michelangelo, Weirdness
+/// to 11 and Michelangelo, Mutant BFF print it.
+pub fn create_mutagen(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    create(g, item.controller, &MUTAGEN, 1)?;
+    Ok(())
 }
 
 /// Creates `count` tokens of `def` under `controller`, a token whose characteristics a rule defines and no printed text:
