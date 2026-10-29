@@ -10,9 +10,8 @@ fn creature_without_flying(q: &dyn Query, asker: &Asker, t: Target) -> bool {
 
 /// "Target creature without flying gains flying until end of turn."
 fn gain_flying(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    if let Some(creature) = targets::object(g, item, 0) {
-        effects::gain_until_end_of_turn(g, item.object, creature, Keyword::Flying);
-    }
+    let Some(creature) = targets::object(g, item, 0) else { return Ok(()) };
+    effects::gain_until_end_of_turn(g, item.object, creature, Keyword::Flying);
     Ok(())
 }
 
