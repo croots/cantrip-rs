@@ -1,0 +1,46 @@
+# A copy of a creature spell cast for sneak (CR 702.190b, 707.10f): Bot1 attacks with Ornithopter on turn 3 and sneaks Turncoat Kunoichi
+# in for {2}{W}{B} (Black Lotus and Mox Jet), returning the Ornithopter. In response Choreographed Sparks (two Mountains) copies the
+# creature spell: the copy becomes a hasty token that enters tapped and attacking Bot2 like the Kunoichi, so both are unblocked
+# (the declare blockers step is over) and deal 3 each, Bot2 20 -> 14, and the token is sacrificed at the end step.
+
+[Bot1 Deck]
+Mountain
+Black Lotus
+Mox Jet
+Turncoat Kunoichi
+Choreographed Sparks
+Ornithopter
+Mountain x15
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Mountain.Play
+Bot1.Hand.Mox Jet.Cast
+Bot1.Hand.Black Lotus.Cast
+Bot1.Hand.Ornithopter.Cast
+[T3 Bot1.Main1]
+Bot1.Hand.Mountain.Play
+Bot1.Attack(Ornithopter > Bot2)
+[T3 Bot1.DeclareBlockers]
+Bot1.Battlefield.Black Lotus.Activate(Color: White)
+Bot1.Battlefield.Mox Jet.Activate
+Bot1.Hand.Turncoat Kunoichi.Cast(Ability: Sneak)
+Bot1.Choose(Ornithopter)
+Bot1.Battlefield.Mountain#1.Activate
+Bot1.Battlefield.Mountain#2.Activate
+Bot1.Hand.Choreographed Sparks.Cast
+Bot1.Modes(2)
+Bot1.Target(Stack.Turncoat Kunoichi)
+Bot1.Pass
+Bot2.Pass
+Bot1.Pass
+Bot2.Pass
+Bot1.Pass
+Bot2.Pass
+[T3 Bot1.Main2]
+? Bot2.Life = 14
+
+[Expect]
+Bot2.Life = 14
