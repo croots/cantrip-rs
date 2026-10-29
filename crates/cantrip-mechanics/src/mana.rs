@@ -213,3 +213,30 @@ pub fn that_player_adds_an_additional<const M: u8>(g: &mut dyn Game, item: &Stac
     g.add_mana(PlayerId(item.data[0] as u8), Mana::ALL[M as usize], 1);
     Ok(())
 }
+
+/// "Whenever you tap a `kind` for mana" (CR 605.1b): the trigger's event, about the permanent tapped.
+fn you_tap_for_mana(q: &dyn Query, source: ObjectId, event: &Event, kind: CardType) -> Option<Fired> {
+    match event {
+        Event::TappedForMana { permanent, player, .. } if *player == q.controller(source) && q.chars(*permanent).is(kind) => {
+            Fired::about(Target::Object(*permanent))
+        }
+        _ => None,
+    }
+}
+
+/// "Whenever you tap a creature for mana" (CR 605.1b). Badgermole Cub prints it.
+pub fn you_tap_a_creature_for_mana(q: &dyn Query, source: ObjectId, event: &Event) -> Option<Fired> {
+    you_tap_for_mana(q, source, event, CardType::Creature)
+}
+
+/// "Whenever you tap a land for mana" (CR 605.1b). Groundchuck & Dirtbag prints it.
+pub fn you_tap_a_land_for_mana(q: &dyn Query, source: ObjectId, event: &Event) -> Option<Fired> {
+    you_tap_for_mana(q, source, event, CardType::Land)
+}
+
+/// "Add {G}" as the effect of a mana ability that triggers (CR 605.1b), resolving at once (CR 605.4a): the additional mana of
+/// Badgermole Cub and Groundchuck & Dirtbag.
+pub fn add_an_additional_green(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    g.add_mana(item.controller, Mana::G, 1);
+    Ok(())
+}
