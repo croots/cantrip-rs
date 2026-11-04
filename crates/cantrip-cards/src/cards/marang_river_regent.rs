@@ -9,18 +9,10 @@ pub static COIL_AND_CATCH: CardDef = CardDef {
     ..oracle::COIL_AND_CATCH
 };
 
-/// "Return up to two other target nonland permanents to their owners' hands." Those still legal go together (CR 608.2b,
-/// 400.7); none chosen, nothing happens.
-fn return_them(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    let returned = targets::legal_objects(g, item);
-    g.return_to_hand(&returned);
-    Ok(())
-}
-
 pub static CARD: CardDef = CardDef {
     abilities: &[triggered(
         THIS_ENTERS,
-        return_them,
+        effects::return_targets_to_hand,
         "When this creature enters, return up to two other target nonland permanents to their owners' hands.",
     )
     .targets(&[up_to(2, targets::other_nonland_permanent_filter)])],

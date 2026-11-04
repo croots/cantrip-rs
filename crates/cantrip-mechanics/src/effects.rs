@@ -926,6 +926,25 @@ pub fn target_player_mills<const N: u32>(g: &mut dyn Game, item: &StackItem) -> 
     Ok(())
 }
 
+/// "Defending player mills N cards" (CR 701.17a, 508.5): the player the ability's source attacked, from the attack it made
+/// (`Query::defending_player`), also after it has left combat. Specimen Freighter (four) prints it, as do Nemesis of Reason
+/// (ten) and, for a creature that becomes blocked, Flint Golem (three).
+pub fn defending_player_mills<const N: u32>(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    if let Some(player) = g.defending_player(item.object) {
+        g.mill(player, N);
+    }
+    Ok(())
+}
+
+/// "Return [up to N] target [permanents] to their owners' hands": those still legal as it resolves go together, as one event
+/// (CR 608.2b, 400.7); none chosen or still legal, nothing happens. Marang River Regent, This Town Ain't Big Enough, Atlantis
+/// Attacks and Specimen Freighter print it.
+pub fn return_targets_to_hand(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    let returned = crate::targets::legal_objects(g, item);
+    g.return_to_hand(&returned);
+    Ok(())
+}
+
 /// "Sacrifice this [permanent]" (CR 701.21a): the ability's source, sacrificed by the ability's controller - by no one when
 /// another player has gained control of it since. City of Traitors and Carnage, Crimson Chaos print it.
 pub fn sacrifice_self(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
