@@ -145,7 +145,7 @@ pub fn void(q: &dyn Query) -> bool {
 }
 
 /// `void` as the `condition` of a triggered ability (CR 603.4): void's intervening "if", checked as the trigger event happens
-/// and again as the ability resolves. Elegy Acolyte and Kavaron Skywarden print it at the beginning of the end step.
+/// and again as the ability resolves. Elegy Acolyte and Kavaron Skywarden print it at the beginning of the end step, Roving Actuator as it enters.
 pub fn void_asked(q: &dyn Query, _: &Asker) -> bool {
     void(q)
 }
