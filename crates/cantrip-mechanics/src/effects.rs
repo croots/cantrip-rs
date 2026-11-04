@@ -404,12 +404,10 @@ pub fn gain_life_then_draw<const LIFE: i32, const CARDS: u32>(g: &mut dyn Game, 
     draw(g, item, CARDS)
 }
 
-/// "You draw a card and lose 1 life" (CR 121.1, 119.3): the controller draws, then loses the life. Plumb the Forbidden,
-/// Robot Domination (before its counter) and Elegy Acolyte print it.
+/// "You draw a card and lose 1 life" (CR 121.1, 119.3): `draw_cards_and_lose_life` of one and 1. Plumb the Forbidden, Robot
+/// Domination (before its counter) and Elegy Acolyte print it.
 pub fn draw_a_card_and_lose_1_life(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    g.draw(item.controller, 1);
-    g.lose_life(item.controller, 1);
-    Ok(())
+    draw_cards_and_lose_life::<1, 1>(g, item)
 }
 
 /// "You draw `CARDS` cards and lose `LIFE` life" (CR 121.1, 119.3): the controller draws, then loses the life. Night's Whisper,
