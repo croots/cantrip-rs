@@ -14,6 +14,30 @@ pub fn attach_to_target(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspen
     Ok(())
 }
 
+/// "Attach it to target creature you control. That creature gains [a keyword] until end of turn" (CR 701.3a, 608.2b, 611.2a): if
+/// the target is no longer legal the whole ability does nothing; otherwise the creature gains the keyword whether or not the
+/// Equipment is still there to be attached (CR 400.7). The three wrappers are the fn pointers an ability's effect takes; Stolen
+/// Stark Tech prints indestructible, Barbed Bloodletter wither and Squire's Lightblade first strike.
+fn attach_to_target_which_gains(g: &mut dyn Game, item: &StackItem, keyword: Keyword) -> Result<(), Suspend> {
+    attach_to_target(g, item)?;
+    if let Some(creature) = targets::object(g, item, 0) {
+        crate::effects::gain_until_end_of_turn(g, item.object, creature, keyword);
+    }
+    Ok(())
+}
+
+pub fn attach_to_target_which_gains_indestructible(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    attach_to_target_which_gains(g, item, Keyword::Indestructible)
+}
+
+pub fn attach_to_target_which_gains_wither(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    attach_to_target_which_gains(g, item, Keyword::Wither)
+}
+
+pub fn attach_to_target_which_gains_first_strike(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    attach_to_target_which_gains(g, item, Keyword::FirstStrike)
+}
+
 /// "Attach [first target] to [second target]" (CR 701.3a): both targets still legal as it resolves, the first is attached to
 /// the second; it does nothing if either was not chosen (an "up to one") or has become illegal (CR 608.2b), and an
 /// Equipment that cannot be attached to that creature stays where it is (CR 701.3b). Raubahn, Bull of Ala Mhigo and Iron Hills
