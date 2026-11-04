@@ -4,12 +4,6 @@ use cantrip_mechanics::triggers::{creature_you_control_deals_combat_damage_to_pl
 use cantrip_mechanics::{effects, history};
 use cantrip_oracle as oracle;
 
-/// Void (intervening "if", CR 603.4): "a nonland permanent left the battlefield this turn or a spell was warped this
-/// turn", checked as the end step begins and again as the ability resolves.
-fn void(q: &dyn Query, _: &Asker) -> bool {
-    history::void(q)
-}
-
 /// "Create a 2/2 colorless Robot artifact creature token."
 fn create_robot(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
     tokens::create(g, item.controller, &ROBOT_2_2, 1)?;
@@ -31,7 +25,7 @@ pub static CARD: CardDef = CardDef {
             create_robot,
             "Void \u{2014} At the beginning of your end step, if a nonland permanent left the battlefield this turn or a spell was warped this turn, create a 2/2 colorless Robot artifact creature token.",
         )
-        .condition(void),
+        .condition(history::void_condition),
     ],
     ..oracle::ELEGY_ACOLYTE
 };
