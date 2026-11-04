@@ -1,5 +1,6 @@
 # Rent Is Due: with only one untapped creature or Treasure there is nothing to tap two of, so "otherwise" applies with no question asked.
-# Bot1 has one Ornithopter and Mox Pearl (an artifact, not a creature or Treasure): Rent Is Due is sacrificed and nothing is drawn.
+# Bot1 has one Ornithopter, an untapped Plains and Mox Pearl (neither a creature nor a Treasure): Rent Is Due is sacrificed and nothing is
+# drawn. There is no question to Accept (the refusal line), so a miscount that asked "you may" would fail it.
 
 [Bot1 Deck]
 Rent Is Due
@@ -13,6 +14,7 @@ Island x20
 [Actions]
 Bot1.Hand.Mox Pearl.Cast
 Bot1.Hand.Ornithopter.Cast
+Bot1.Hand.Plains.Play
 Bot1.Battlefield.Mox Pearl.Activate
 Bot1.Hand.Rent Is Due.Cast
 Bot1.Pass
@@ -20,10 +22,11 @@ Bot2.Pass
 [T1 Bot1.End]
 Bot1.Pass
 Bot2.Pass
+! Bot1.Accept
 
 [Expect]
 Bot1.Battlefield.Rent Is Due = (absent)
 Bot1.Graveyard.Count = 1
 Bot1.Battlefield.Ornithopter.Tapped = false
-Bot1.Hand.Count = 4
+Bot1.Hand.Count = 3
 Stack.Count = 0

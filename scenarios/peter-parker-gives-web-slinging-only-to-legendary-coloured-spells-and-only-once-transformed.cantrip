@@ -1,6 +1,6 @@
 # Amazing Spider-Man: "Each legendary spell you cast that's one or more colors has web-slinging {G}{W}{U}." Only a legendary, coloured
 # spell has it, and only once Peter Parker has transformed. Bot1 has Llanowar Elves tapped for mana as the creature to return. Before the
-# transform, the second Peter Parker can't be web-slung; after it, a nonlegendary Ornithopter in hand still can't be.
+# transform, the second Peter Parker can't be web-slung; after it, a nonlegendary Ornithopter (colorless) or Savannah Lions (white) in hand still can't be.
 
 [Bot1 Deck]
 Mox Emerald
@@ -11,6 +11,7 @@ Llanowar Elves
 Peter Parker
 Peter Parker
 Ornithopter
+Savannah Lions
 Plains x20
 
 [Bot2 Deck]
@@ -40,8 +41,9 @@ Bot2.Pass
 [T5 Bot1.Main1]
 Bot1.Battlefield.Llanowar Elves.Activate
 ! Bot1.Hand.Ornithopter.Cast(Ability: Web-slinging)
+! Bot1.Hand.Savannah Lions.Cast(Ability: Web-slinging)
 
 [Expect]
 Bot1.Battlefield.Amazing Spider-Man.Power = 4
-Bot1.Hand = Ornithopter; Peter Parker; Plains
+Bot1.Hand = Ornithopter; Peter Parker; Savannah Lions
 Bot1.Battlefield.Llanowar Elves.Tapped = true

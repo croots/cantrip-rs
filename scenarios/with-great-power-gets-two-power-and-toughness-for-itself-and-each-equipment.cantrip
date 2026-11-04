@@ -1,6 +1,6 @@
 # With Great Power . . .: "Enchanted creature gets +2/+2 for each Aura and Equipment attached to it." The Aura counts itself: Bot1's Ornithopter
 # (0/2) is a 2/4 with it alone on turn 1. On turn 3 Bot1 equips Web-Shooters (+1/+1) too: two attachments are +4/+4 and the Equipment's own
-# +1/+1, so it is a 5/7 (CR 613.4c).
+# +1/+1, so it is a 5/7 (CR 613.4c). Web-Shooters on the battlefield but not yet attached counts for nothing: still 2/4 before it is equipped.
 
 [Bot1 Deck]
 With Great Power . . .
@@ -36,6 +36,7 @@ Bot1.Battlefield.Mox Pearl.Activate
 Bot1.Battlefield.Mox Jet.Activate
 Bot1.Pass
 Bot2.Pass
+? Bot1.Battlefield.Ornithopter.Power = 2
 Bot1.Battlefield.Mox Ruby.Activate
 Bot1.Battlefield.Mox Sapphire.Activate
 Bot1.Battlefield.Web-Shooters.Activate(Ornithopter)
