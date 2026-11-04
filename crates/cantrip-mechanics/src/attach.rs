@@ -38,6 +38,10 @@ pub fn attach_to_target_which_gains_first_strike(g: &mut dyn Game, item: &StackI
     attach_to_target_which_gains(g, item, Keyword::FirstStrike)
 }
 
+pub fn attach_to_target_which_gains_hexproof(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    attach_to_target_which_gains(g, item, Keyword::Hexproof)
+}
+
 /// "Attach [first target] to [second target]" (CR 701.3a): both targets still legal as it resolves, the first is attached to
 /// the second; it does nothing if either was not chosen (an "up to one") or has become illegal (CR 608.2b), and an
 /// Equipment that cannot be attached to that creature stays where it is (CR 701.3b). Raubahn, Bull of Ala Mhigo and Iron Hills

@@ -1,5 +1,5 @@
 use cantrip_api::*;
-use cantrip_mechanics::attach::{attach_to_target_and_gain_until_end_of_turn, attached_object, equip};
+use cantrip_mechanics::attach::{attach_to_target_which_gains_hexproof, attached_object, equip};
 use cantrip_mechanics::statics::plus_pt;
 use cantrip_mechanics::{targets, triggers::THIS_ENTERS};
 use cantrip_oracle as oracle;
@@ -9,7 +9,7 @@ pub static CARD: CardDef = CardDef {
     abilities: &[
         triggered(
             THIS_ENTERS,
-            |g, item| attach_to_target_and_gain_until_end_of_turn(g, item, Keyword::Hexproof),
+            attach_to_target_which_gains_hexproof,
             "When this Equipment enters, attach it to target creature you control. That creature gains hexproof until end of turn.",
         )
         .targets(&[targets::CREATURE_YOU_CONTROL]),
