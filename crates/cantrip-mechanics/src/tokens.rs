@@ -476,6 +476,27 @@ pub static GOLD: CardDef = CardDef {
     ..token!(Gold)
 };
 
+/// A 2/2 green Bird creature token with "Whenever a land you control enters, this token gets +1/+0 until end of turn." (CR 111.1,
+/// 603.2). Chocobo Racetrack and Gysahl Greens make it.
+pub static LANDFALL_BIRD: CardDef = CardDef {
+    colors: Some(ColorSet::of(Color::Green)),
+    types: TypeSet::of(&[CardType::Creature]),
+    power: Some(2),
+    toughness: Some(2),
+    abilities: &[triggered(
+        crate::triggers::LANDFALL,
+        crate::effects::this_gets::<1, 0>,
+        "Whenever a land you control enters, this token gets +1/+0 until end of turn.",
+    )],
+    ..token!(Bird)
+};
+
+/// Creates a landfall Bird token under `controller` (a card file lists `tokens::LANDFALL_BIRD` in its `EXTRA`).
+pub fn create_landfall_bird(g: &mut dyn Game, controller: PlayerId) -> Result<(), Suspend> {
+    create(g, controller, &LANDFALL_BIRD, 1)?;
+    Ok(())
+}
+
 /// A red and green Heartwood artifact token with "{T}: Add {R} or {G}." (CR 111.10x). Aerid Konstrari, Heartwood Crafter, Konstrari Improviser and Hungering Puppetbeast make it.
 pub static HEARTWOOD: CardDef = CardDef {
     colors: Some(ColorSet(0b11000)),
