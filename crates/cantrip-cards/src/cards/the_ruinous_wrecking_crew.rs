@@ -14,16 +14,6 @@ fn discard_then_draw(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> 
     effects::discard_then_draw(g, item, 1)
 }
 
-/// Mode 2: "Target opponent loses 2 life." (CR 119.3), made only if the target is still legal (CR 608.2b).
-fn opponent_loses_2(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    if g.target_legal(item, 0)
-        && let Target::Player(player) = item.target(0)
-    {
-        g.lose_life(player, 2);
-    }
-    Ok(())
-}
-
 /// Mode 3: "Destroy target token." (CR 701.8)
 fn destroy_token(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
     destroy_target(g, item, 0);
@@ -42,7 +32,7 @@ fn each_player_sacrifices_a_creature(g: &mut dyn Game, item: &StackItem) -> Resu
 /// from the stack.
 static MODAL: ModalDef = modes(&[
     mode(discard_then_draw, "Discard a card, then draw a card."),
-    mode(opponent_loses_2, "Target opponent loses 2 life.").targets(&[targets::OPPONENT]),
+    mode(effects::target_player_loses_life::<2>, "Target opponent loses 2 life.").targets(&[targets::OPPONENT]),
     mode(destroy_token, "Destroy target token.").targets(&[target(token)]),
     mode(each_player_sacrifices_a_creature, "Each player sacrifices a creature of their choice."),
 ])
