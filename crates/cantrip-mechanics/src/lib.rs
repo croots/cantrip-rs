@@ -324,6 +324,13 @@ pub fn each_opponent_sacrifices(
     each_opponent_sacrifices_choices(g, controller, source, count, kind).map(|_| ())
 }
 
+/// "Each opponent sacrifices a nontoken creature of their choice" (CR 701.21a, 101.4): `each_opponent_sacrifices` for one
+/// nontoken creature. An opponent with only creature tokens, or none, sacrifices nothing. Sheoldred's Edict, In the Pale
+/// Moonlight's first chapter and Susurian Dirgecraft print it.
+pub fn each_opponent_sacrifices_a_nontoken_creature(g: &mut dyn Game, controller: PlayerId, source: ObjectId) -> Result<(), Suspend> {
+    each_opponent_sacrifices(g, controller, source, 1, |q, id| q.chars(id).is(CardType::Creature) && !q.obj(id).token)
+}
+
 /// As `each_opponent_sacrifices`, returning who chose what (the old objects): an opponent missing from it sacrificed nothing,
 /// having no permanent of the kind or being unable to be made to (CR 101.2), which "each opponent who can't" asks. Momentum
 /// Breaker ("each opponent who can't discards a card") and Skull Storm ("each opponent who can't loses half their life")

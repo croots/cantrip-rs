@@ -1,13 +1,11 @@
 use cantrip_api::*;
-use cantrip_mechanics::{each_opponent_sacrifices, effects, select, tokens};
+use cantrip_mechanics::{each_opponent_sacrifices_a_nontoken_creature, effects, select, tokens};
 use cantrip_oracle as oracle;
 
 /// I: "Each opponent sacrifices a nontoken creature of their choice" (CR 701.21a, 101.4). An opponent with no nontoken
 /// creature sacrifices nothing.
 fn chapter_one(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    each_opponent_sacrifices(g, item.controller, item.object, 1, |q, id| {
-        q.chars(id).is(CardType::Creature) && !q.obj(id).token
-    })
+    each_opponent_sacrifices_a_nontoken_creature(g, item.controller, item.object)
 }
 
 /// II: "Investigate" (CR 701.16a): a Clue token under this Saga's controller.

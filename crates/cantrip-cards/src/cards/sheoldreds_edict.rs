@@ -1,10 +1,6 @@
 use cantrip_api::*;
-use cantrip_mechanics::each_opponent_sacrifices;
+use cantrip_mechanics::{each_opponent_sacrifices, each_opponent_sacrifices_a_nontoken_creature};
 use cantrip_oracle as oracle;
-
-fn nontoken_creature(g: &dyn Query, id: ObjectId) -> bool {
-    g.chars(id).is(CardType::Creature) && !g.obj(id).token
-}
 
 fn creature_token(g: &dyn Query, id: ObjectId) -> bool {
     g.chars(id).is(CardType::Creature) && g.obj(id).token
@@ -15,7 +11,7 @@ fn planeswalker(g: &dyn Query, id: ObjectId) -> bool {
 }
 
 fn sacrifice_nontoken(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    each_opponent_sacrifices(g, item.controller, item.object, 1, nontoken_creature)
+    each_opponent_sacrifices_a_nontoken_creature(g, item.controller, item.object)
 }
 
 fn sacrifice_token(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
