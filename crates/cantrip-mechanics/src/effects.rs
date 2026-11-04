@@ -2001,3 +2001,20 @@ pub fn exile_first_target(g: &mut dyn Game, item: &StackItem) -> Result<(), Susp
     crate::exile_target(g, item, 0);
     Ok(())
 }
+
+/// "Target creature you control gets +X/+0 and [up to one] target creature an opponent controls gets -0/-X until end of turn"
+/// (CR 611.2a, 608.2b): the first target gets the power and the second the loss of toughness, as one instruction (the two
+/// "gets" are one sentence, joined by "and"). A target that is no longer legal, or was not chosen, is left alone while the
+/// other still gets its half. The caller works X out once, as the ability resolves (CR 608.2h). Gloom Ripper and Monoist
+/// Circuit-Feeder print it.
+pub fn first_target_gets_plus_x_second_gets_minus_x(g: &mut dyn Game, item: &StackItem, x: i16) -> Result<(), Suspend> {
+    g.one_instruction(&mut |g| {
+        if let Some(mine) = crate::targets::object(g, item, 0) {
+            crate::pump(g, item.object, mine, x, 0);
+        }
+        if let Some(theirs) = crate::targets::object(g, item, 1) {
+            crate::pump(g, item.object, theirs, 0, -x);
+        }
+        Ok(())
+    })
+}
