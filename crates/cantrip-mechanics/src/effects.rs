@@ -412,6 +412,14 @@ pub fn draw_a_card_and_lose_1_life(g: &mut dyn Game, item: &StackItem) -> Result
     Ok(())
 }
 
+/// "You draw `CARDS` cards and lose `LIFE` life" (CR 121.1, 119.3): the controller draws, then loses the life. Night's Whisper,
+/// Visions of Villainy and Decode Transmissions print it of two and 2.
+pub fn draw_cards_and_lose_life<const CARDS: u32, const LIFE: i32>(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    g.draw(item.controller, CARDS);
+    g.lose_life(item.controller, LIFE);
+    Ok(())
+}
+
 /// "Draw N cards, then put two cards from your hand on top of your library in any order" (CR 121.1, 401.4): the two are
 /// chosen together (CR 608.2d) and put back one at a time in the order chosen, so the last chosen ends on top; either may be
 /// a card that was already in hand (ruling 2024-06-07), not only one of the N just drawn. Brainsurge (four), Brainstorm and
