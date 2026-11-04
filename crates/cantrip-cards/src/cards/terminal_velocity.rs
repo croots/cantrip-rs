@@ -24,12 +24,10 @@ fn put_and_gain(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
 }
 
 /// "It deals damage equal to its mana value to each creature": the mana value it last had on the battlefield (CR 603.10a, 608.2h;
-/// the card's ruling), an {X} in its cost counting as 0 there (CR 202.3e).
+/// the card's ruling), an {X} in its cost counting as 0 there (CR 202.3e); 0 deals no damage (CR 120.8).
 fn damage_equal_to_its_mana_value(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
     let value = g.state().last_known(item.object).map_or(0, |known| known.mana_value);
-    if value > 0 {
-        effects::damage_each_creature(g, item, value as u16);
-    }
+    effects::damage_each_creature(g, item, value as u16);
     Ok(())
 }
 

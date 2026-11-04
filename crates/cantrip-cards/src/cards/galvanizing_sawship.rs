@@ -12,8 +12,8 @@ pub static CARD: CardDef = CardDef {
     ],
     statics: &[
         static_ability(Layer::Type, station::charged::<3>, station::is_a_creature, THREE_PLUS),
-        static_ability(Layer::Ability, station::charged::<3>, statics::have_flying_and_haste, THREE_PLUS).continues(),
-        static_ability(Layer::PtSet, station::charged::<3>, statics::base_pt::<6, 5>, THREE_PLUS).continues(),
+        static_ability(Layer::Ability, statics::itself, statics::have_flying_and_haste, THREE_PLUS).continues(),
+        static_ability(Layer::PtSet, statics::itself, statics::base_pt::<6, 5>, THREE_PLUS).continues(),
     ],
     ..oracle::GALVANIZING_SAWSHIP
 };

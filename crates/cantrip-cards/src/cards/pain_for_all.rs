@@ -27,7 +27,7 @@ fn enchanted_creature_deals_damage_equal_to_its_power(g: &mut dyn Game, item: &S
 /// creature is still on the battlefield as the event is seen, before state-based actions).
 fn enchanted_creature_dealt_damage(q: &dyn Query, source: ObjectId, event: &Event) -> Option<Fired> {
     match event {
-        Event::Damage { target: Target::Object(hurt), amount, .. } if *amount > 0 && q.obj(source).attached_to == Some(*hurt) => {
+        Event::Damage { target: Target::Object(hurt), amount, .. } if q.obj(source).attached_to == Some(*hurt) => {
             Some(Fired { subject: Target::Object(*hurt), data: [*amount as u32, 0] })
         }
         _ => None,

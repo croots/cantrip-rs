@@ -22,8 +22,8 @@ pub static CARD: CardDef = CardDef {
     ],
     statics: &[
         static_ability(Layer::Type, station::charged::<6>, station::is_a_creature, SIX_PLUS),
-        static_ability(Layer::Ability, station::charged::<6>, statics::have_flying, SIX_PLUS).continues(),
-        static_ability(Layer::PtSet, station::charged::<6>, statics::base_pt::<4, 3>, SIX_PLUS).continues(),
+        static_ability(Layer::Ability, statics::itself, statics::have_flying, SIX_PLUS).continues(),
+        static_ability(Layer::PtSet, statics::itself, statics::base_pt::<4, 3>, SIX_PLUS).continues(),
     ],
     ..oracle::WARMAKER_GUNSHIP
 };

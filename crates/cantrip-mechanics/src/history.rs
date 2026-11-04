@@ -433,7 +433,7 @@ pub fn a_card_left_your_graveyard_this_turn(q: &dyn Query, asker: &Asker) -> boo
 }
 
 /// The void condition as an intervening "if" (CR 603.4): `.condition(history::void_condition)` on a trigger, checked as it
-/// triggers and again as it resolves. Elegy Acolyte, Alpharael, Stonechosen and Hylderblade print it.
+/// triggers and again as it resolves. Elegy Acolyte, Alpharael, Stonechosen, Hylderblade, Kavaron Skywarden and Roving Actuator print it.
 pub fn void_condition(q: &dyn Query, _: &Asker) -> bool {
     void(q)
 }

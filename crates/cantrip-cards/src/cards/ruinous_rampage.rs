@@ -22,7 +22,6 @@ fn exile_cheap_artifacts(g: &mut dyn Game, _: &StackItem) -> Result<(), Suspend>
 static MODAL: ModalDef = modes(&[
     mode(damage, "Ruinous Rampage deals 3 damage to each opponent."),
     mode(exile_cheap_artifacts, "Exile all artifacts with mana value 3 or less."),
-])
-.choose(1, 1);
+]);
 
 pub static CARD: CardDef = CardDef { spell: Some(SpellDef::MODAL), modal: Some(&MODAL), ..oracle::RUINOUS_RAMPAGE };

@@ -16,8 +16,8 @@ pub static CARD: CardDef = CardDef {
     ],
     statics: &[
         static_ability(Layer::Type, station::charged::<8>, station::is_a_creature, EIGHT_PLUS),
-        static_ability(Layer::Ability, station::charged::<8>, statics::have_flying, EIGHT_PLUS).continues(),
-        static_ability(Layer::PtSet, station::charged::<8>, statics::base_pt::<1, 5>, EIGHT_PLUS).continues(),
+        static_ability(Layer::Ability, statics::itself, statics::have_flying, EIGHT_PLUS).continues(),
+        static_ability(Layer::PtSet, statics::itself, statics::base_pt::<1, 5>, EIGHT_PLUS).continues(),
     ],
     ..oracle::DEBRIS_FIELD_CRUSHER
 };
