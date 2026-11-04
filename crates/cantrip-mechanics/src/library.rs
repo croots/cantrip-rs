@@ -1145,6 +1145,17 @@ pub fn owner_puts_on_top_or_bottom(g: &mut dyn Game, source: ObjectId, object: O
     Ok(())
 }
 
+/// "Target <permanent>'s owner puts it on their choice of the top or bottom of their library. Surveil N." as one spell's whole
+/// effect, for its first target: `owner_puts_first_target_on_top_or_bottom`, then the caster surveils N (CR 701.25). A spell whose
+/// only target has become illegal does nothing at all (CR 608.2b), so there is no surveil then; otherwise the surveil follows. Lost
+/// in Space (artifact or creature) and Vanish from Sight (nonland permanent) print it.
+pub fn owner_puts_first_target_on_top_or_bottom_then_surveil<const N: usize>(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    let Some(permanent) = crate::targets::object(g, item, 0) else { return Ok(()) };
+    owner_puts_on_top_or_bottom(g, item.object, permanent)?;
+    g.end_sentence();
+    crate::effects::surveil(g, item, N)
+}
+
 /// "Target creature's owner puts it on their choice of the top or bottom of their library": the first target's owner
 /// chooses (`owner_puts_on_top_or_bottom`). With its target gone the spell does not resolve (CR 608.2b). Uneasy Partings, Lagoon
 /// Breach (Horned Loch-Whale) and Run Behind print it.
