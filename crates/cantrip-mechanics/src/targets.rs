@@ -742,6 +742,13 @@ pub fn artifact_or_creature_filter(q: &dyn Query, _: &Asker, t: Target) -> bool 
 }
 /// "Target artifact or enchantment". Disenchant and Cathar Commando print it.
 pub const ARTIFACT_OR_ENCHANTMENT: TargetSpec = target(artifact_or_enchantment_filter);
+
+/// "Target artifact, enchantment, or creature with flying" (CR 115.1, 702.9): a permanent that is an artifact or an enchantment,
+/// or a creature with flying as the layers give it now. Vivien Reid, Mutant Chain Reaction and Airship Crash print it.
+pub fn artifact_enchantment_or_creature_with_flying_filter(q: &dyn Query, asker: &Asker, t: Target) -> bool {
+    artifact_or_enchantment_filter(q, asker, t) || creature_with_flying_filter(q, asker, t)
+}
+pub const ARTIFACT_ENCHANTMENT_OR_CREATURE_WITH_FLYING: TargetSpec = target(artifact_enchantment_or_creature_with_flying_filter);
 /// "Target artifact, creature, or enchantment": a permanent that is any of them (CR 115.1). March of Otherworldly Light (with
 /// a mana value limit of its own) and Teferi, Time Raveler (up to one) print it.
 pub fn artifact_creature_or_enchantment_filter(q: &dyn Query, _: &Asker, t: Target) -> bool {
