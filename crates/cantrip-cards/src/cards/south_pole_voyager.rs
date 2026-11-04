@@ -7,10 +7,7 @@ use cantrip_oracle as oracle;
 /// source ability and turn: one earlier resolution this turn makes this the second, and the third and later draw nothing.
 fn gain_life_and_draw_the_second_time(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
     effects::gain_one_life(g, item)?;
-    if g.history().resolutions(item.object, item.ability) == 1 {
-        effects::draw(g, item, 1)?;
-    }
-    Ok(())
+    effects::draw_if_second_resolution_this_turn(g, item)
 }
 
 pub static CARD: CardDef = CardDef {

@@ -411,6 +411,16 @@ pub fn draw(g: &mut dyn Game, item: &StackItem, n: u32) -> Result<(), Suspend> {
     Ok(())
 }
 
+/// "If this is the second time this ability has resolved this turn, draw a card" (CR 608.2c, 121.1): the count is per source
+/// ability and turn, read from the event history, so one earlier resolution this turn makes this the second, and the third and
+/// later draw nothing. South Pole Voyager and Tannuk, Memorial Ensign print it after their other instruction.
+pub fn draw_if_second_resolution_this_turn(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    if g.history().resolutions(item.object, item.ability) == 1 {
+        draw(g, item, 1)?;
+    }
+    Ok(())
+}
+
 /// "You gain LIFE life and draw CARDS card(s)" (CR 119.3, 121.1): the controller gains the life, then draws. Candy Trail and
 /// Chevill, Bane of Monsters print it with 3 life and a card, Inspiring Overseer with 1 life and a card.
 pub fn gain_life_then_draw<const LIFE: i32, const CARDS: u32>(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
