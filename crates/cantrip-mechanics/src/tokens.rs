@@ -238,6 +238,12 @@ pub fn create_food(g: &mut dyn Game, controller: PlayerId) -> Result<(), Suspend
     Ok(())
 }
 
+/// "Create a Food token" (CR 111.10b) as the effect of an ability: one Food under the ability's controller. Heroic Feast, Iroh,
+/// Tea Master and Spider-Ham, Peter Porker print it as their enters trigger.
+pub fn create_a_food(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    create_food(g, item.controller)
+}
+
 /// A 2/2 white Samurai creature token with vigilance. The Wandering Emperor's -1 and Experimental Synthesizer's sacrifice
 /// ability make it.
 pub static SAMURAI: CardDef = CardDef {
