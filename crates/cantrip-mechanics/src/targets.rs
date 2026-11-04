@@ -1176,6 +1176,16 @@ pub fn land_card_in_your_graveyard(q: &dyn Query, asker: &Asker, t: Target) -> b
 /// "Target land card from your graveyard": see `land_card_in_your_graveyard`.
 pub const LAND_CARD_IN_YOUR_GRAVEYARD: TargetSpec = target(land_card_in_your_graveyard);
 
+/// "Target artifact card in your graveyard" (CR 115.1, 404.1): a card there is the types it has in a graveyard. The filter is
+/// public for "up to two target artifact cards" (`up_to(2, ..)`, Does Machines).
+pub fn artifact_card_in_your_graveyard(q: &dyn Query, asker: &Asker, t: Target) -> bool {
+    card_in_your_graveyard(q, asker, t, &[CardType::Artifact])
+}
+
+/// `artifact_card_in_your_graveyard` as a slot. Brilliance Unleashed, Call Damage Control, Daretti, Scrap Savant, Emry, Lurker of
+/// the Loch and Scour for Scrap print it.
+pub const ARTIFACT_CARD_IN_YOUR_GRAVEYARD: TargetSpec = target(artifact_card_in_your_graveyard);
+
 fn creature_card_in_your_graveyard_filter(q: &dyn Query, asker: &Asker, t: Target) -> bool {
     card_in_your_graveyard(q, asker, t, &[CardType::Creature])
 }

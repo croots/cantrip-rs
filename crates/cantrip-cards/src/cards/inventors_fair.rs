@@ -1,6 +1,6 @@
 use cantrip_api::*;
 use cantrip_mechanics::artifacts_you_control;
-use cantrip_mechanics::library::{search_to_hand, Find};
+use cantrip_mechanics::library::search_artifact_to_hand;
 use cantrip_oracle as oracle;
 
 /// Whether the controller controls three or more artifacts (CR 109.5).
@@ -11,7 +11,7 @@ fn three_artifacts(q: &dyn Query, asker: &Asker) -> bool {
 /// Search your library for an artifact card, reveal it, put it into your hand, then shuffle. The search may come up
 /// empty; the shuffle follows either way.
 fn tutor(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    search_to_hand(g, item.controller, item.object, Find::ONE.revealed(), |q, c| q.chars(c).is(CardType::Artifact))?;
+    search_artifact_to_hand(g, item.controller, item.object)?;
     Ok(())
 }
 
