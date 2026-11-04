@@ -1,5 +1,5 @@
 use cantrip_api::*;
-use cantrip_mechanics::{effects, select, targets, tokens, triggers};
+use cantrip_mechanics::{effects, targets, tokens, triggers};
 use cantrip_oracle as oracle;
 
 /// "You may sacrifice another creature or artifact. If you do, draw a card and create a Treasure token." "Another" is any
@@ -7,13 +7,11 @@ use cantrip_oracle as oracle;
 /// choice, and nobody is asked when nothing is eligible. "If you do": the permanent chosen is sacrificed (CR 701.21a;
 /// nothing stops its controller sacrificing it), and only a chosen one draws and makes the Treasure.
 fn sacrifice_for_a_card(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    let you = item.controller;
-    let rule = select::another_creature_or_artifact_permanents(select::up_to(1));
-    if effects::may_sacrifice(g, you, item.object, rule)?.is_empty() {
+    if !effects::may_sacrifice_another_creature_or_artifact(g, item)? {
         return Ok(());
     }
     effects::draw(g, item, 1)?;
-    tokens::create_treasure(g, you)
+    tokens::create_treasure(g, item.controller)
 }
 
 /// "Whenever you sacrifice a token" (CR 701.21a): a token of yours moved from the battlefield by a sacrifice, judged as it

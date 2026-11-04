@@ -597,6 +597,14 @@ pub fn may_sacrifice(g: &mut dyn Game, player: PlayerId, source: ObjectId, rule:
     Ok(g.sacrifice(player, &chosen))
 }
 
+/// "You may sacrifice another creature or artifact" (CR 701.21a, 608.2d): `may_sacrifice` for any permanent of the controller but
+/// the ability's source, a creature or an artifact; true when one was sacrificed, for the "if you do" (CR 608.2c) that follows.
+/// Automated Warfare System, Khan, Vengeful Heart, The Sackville-Bagginses and Comet Crawler print it.
+pub fn may_sacrifice_another_creature_or_artifact(g: &mut dyn Game, item: &StackItem) -> Result<bool, Suspend> {
+    let rule = crate::select::another_creature_or_artifact_permanents(crate::select::up_to(1));
+    Ok(!may_sacrifice(g, item.controller, item.object, rule)?.is_empty())
+}
+
 /// "You may sacrifice an artifact or discard [a kind of] card" (CR 608.2c-d, 701.9, 701.21): the player chooses as the effect
 /// resolves which of the two to do, or neither; the discard is one card `discard` allows of their hand. An option with nothing
 /// to do it with (no artifact, no card of the kind in hand) is not offered, and nothing is asked with neither possible.

@@ -1,5 +1,5 @@
 use cantrip_api::*;
-use cantrip_mechanics::{effects, select, triggers};
+use cantrip_mechanics::{effects, triggers};
 use cantrip_oracle as oracle;
 
 /// "When Khan enters, you may sacrifice another creature or artifact. If you do, draw two cards." (CR 603.6a, 608.2d):
@@ -7,9 +7,7 @@ use cantrip_oracle as oracle;
 /// has (CR 701.21a), and the cards are drawn only for a permanent actually sacrificed (CR 608.2c). "Another" is any
 /// permanent but Khan himself, of either type.
 fn sacrifice_another_to_draw_two(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    let you = item.controller;
-    let rule = select::another_creature_or_artifact_permanents(select::up_to(1));
-    if !effects::may_sacrifice(g, you, item.object, rule)?.is_empty() {
+    if effects::may_sacrifice_another_creature_or_artifact(g, item)? {
         effects::draw(g, item, 2)?;
     }
     Ok(())
