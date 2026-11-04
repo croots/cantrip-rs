@@ -801,6 +801,15 @@ pub fn each_opponent_loses_1_life(g: &mut dyn Game, item: &StackItem) -> Result<
     Ok(())
 }
 
+/// "Target opponent (or player) loses `N` life" (CR 119.3): the ability's first target, a player. A target no longer legal loses
+/// nothing (CR 608.2b). The Sackville-Bagginses (1), The Ruinous Wrecking Crew (2) and Dubious Delicacy (3) print it.
+pub fn target_player_loses_life<const N: i32>(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    if let Some(player) = crate::targets::player(g, item, 0) {
+        g.lose_life(player, N);
+    }
+    Ok(())
+}
+
 /// "Target player loses `n` life and you gain `n` life" (CR 119.3), and "target opponent ...": the first target, a player,
 /// whichever its slot allows. A target no longer legal loses nothing (CR 608.2b), while the gain, which does not use it, is
 /// still made when the resolution goes on without it (a mode of a modal spell whose other target is legal); an ability with that
