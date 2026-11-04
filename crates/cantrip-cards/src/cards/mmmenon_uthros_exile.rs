@@ -3,7 +3,7 @@ use cantrip_mechanics::{effects, targets};
 use cantrip_oracle as oracle;
 
 /// "Whenever an artifact you control enters" (CR 603.6a): an artifact, token or card, under your control as it entered. The
-/// source is not itself an artifact, so it never answers its own entering.
+/// source answers its own entering only if it enters as an artifact (Mycosynth Lattice), like any other.
 fn artifact_you_control_enters(q: &dyn Query, me: &Asker, event: &Event) -> Option<Fired> {
     match event {
         Event::ZoneChange { new, to, .. }
