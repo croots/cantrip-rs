@@ -1573,6 +1573,18 @@ pub fn target_creature_gains_indestructible(g: &mut dyn Game, item: &StackItem) 
     Ok(())
 }
 
+/// "Target creature gets +`P`/+`T` and gains indestructible until end of turn" (CR 611.2a, 702.12): both come from the spell, to
+/// the creature it targeted, if it is still a legal target as this resolves (CR 608.2b). Masterful Flourish and Dark Endurance
+/// print it.
+pub fn target_creature_gets_and_gains_indestructible<const P: i16, const T: i16>(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    let Some(creature) = crate::targets::object(g, item, 0) else { return Ok(()) };
+    instruction(g, |g| {
+        crate::pump(g, item.object, creature, P, T);
+        gain_indestructible_until_end_of_turn(g, item.object, creature);
+    });
+    Ok(())
+}
+
 /// "This creature gains [a keyword] until end of turn. Tap it." (CR 611.2a, 701.26a): if the ability's source is still on the
 /// battlefield as the permanent it was (CR 400.7), it gains the keyword for the rest of the turn, then it is tapped. The tap is
 /// the ability's own instruction, not its cost, so the ability can be activated while it is tapped already (Underrealm Lich's
