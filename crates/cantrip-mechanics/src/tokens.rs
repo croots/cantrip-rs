@@ -543,6 +543,12 @@ pub fn create_lander(g: &mut dyn Game, controller: PlayerId) -> Result<(), Suspe
     Ok(())
 }
 
+/// "Create a Lander token." as an ability's whole effect (CR 111.10u): `create_lander` for the ability's controller. Beamsaw
+/// Prospector and Biotech Specialist print it.
+pub fn create_a_lander(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    create_lander(g, item.controller)
+}
+
 /// Creates a Blood token (CR 111.10g) under `controller`. Bloodtithe Harvester and Ivora, Insatiable Heir make it.
 pub fn create_blood(g: &mut dyn Game, controller: PlayerId) -> Result<(), Suspend> {
     create_by_rule(g, controller, &BLOOD, 1, false)?;

@@ -4,11 +4,6 @@ use cantrip_mechanics::triggers::{self, THIS_ENTERS};
 use cantrip_mechanics::{effects, targets};
 use cantrip_oracle as oracle;
 
-/// "When this creature enters, create a Lander token."
-fn lander(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    tokens::create_lander(g, item.controller)
-}
-
 /// "Whenever you sacrifice an artifact" (CR 701.21a): an artifact of yours that a sacrifice moved from the battlefield,
 /// read as it was when it left, so a Lander sacrificed as a cost counts and so does a Treasure.
 fn you_sacrifice_an_artifact(q: &dyn Query, me: &Asker, event: &Event) -> Option<Fired> {
@@ -18,7 +13,7 @@ fn you_sacrifice_an_artifact(q: &dyn Query, me: &Asker, event: &Event) -> Option
 
 pub static CARD: CardDef = CardDef {
     abilities: &[
-        triggered(THIS_ENTERS, lander, "When this creature enters, create a Lander token."),
+        triggered(THIS_ENTERS, tokens::create_a_lander, "When this creature enters, create a Lander token."),
         triggered(
             when_asked(EventMask::ZONE_CHANGE, you_sacrifice_an_artifact),
             effects::damage_first_target::<2>,
