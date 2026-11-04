@@ -1994,3 +1994,10 @@ pub fn return_exiled_to_hand(g: &mut dyn Game, item: &StackItem) -> Result<(), S
     g.return_to_hand(&exiled);
     Ok(())
 }
+
+/// "Exile target [thing]" (CR 701.13): the spell's or ability's first target, nothing if it is no longer a legal target
+/// (CR 608.2b). Despark, Kin-Tree Severance, Ride's End and Gravkill print it.
+pub fn exile_first_target(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    crate::exile_target(g, item, 0);
+    Ok(())
+}
