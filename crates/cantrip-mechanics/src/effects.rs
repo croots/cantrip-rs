@@ -81,6 +81,20 @@ pub fn target_creature_gets_and_gains_first_strike<const P: i16, const T: i16>(g
     Ok(())
 }
 
+/// "Target creature gets +`P`/+`T` and gains reach and first strike until end of turn" (CR 611.2a, 702.17, 702.7): one
+/// instruction, the creature being the ability's first target; nothing if it is no longer a legal target as the spell resolves
+/// (CR 608.2b). Smaug's Fury and Rig for War (both +3/+0) print it.
+pub fn target_creature_gets_and_gains_reach_and_first_strike<const P: i16, const T: i16>(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    if let Some(creature) = crate::targets::object(g, item, 0) {
+        instruction(g, |g| {
+            crate::pump(g, item.object, creature, P, T);
+            gain_until_end_of_turn(g, item.object, creature, Keyword::Reach);
+            gain_until_end_of_turn(g, item.object, creature, Keyword::FirstStrike);
+        });
+    }
+    Ok(())
+}
+
 /// "Target creature gets +`P`/+`T` and gains haste until end of turn" (CR 611.2a, 702.10): one instruction, the creature
 /// being the ability's first target; nothing if it is no longer a legal target as the spell resolves (CR 608.2b). Wild Ride
 /// (+3/+0), Fame (+2/+0) and Kavaron Turbodrone (+1/+1) print it.
