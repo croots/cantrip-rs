@@ -120,6 +120,14 @@ pub fn itself_with_delirium(q: &dyn LayerQuery, source: ObjectId, affected: Obje
     source == affected && delirium(q, source)
 }
 
+/// "As long as you control an artifact, this creature gets/has ..." (CR 604.1, 611.3a) as a static ability's `StaticDef::affects`:
+/// only the source itself, and only while its controller controls an artifact, the source itself counting if it is one, each
+/// judged as the earlier layers made it and asked again whenever characteristics are computed. Cloudsculpt Technician, Foundry
+/// Screecher and Gearsmith Prodigy print it.
+pub fn itself_while_you_control_an_artifact(q: &dyn LayerQuery, source: ObjectId, affected: ObjectId, _: &Chars) -> bool {
+    source == affected && artifacts_you_control(q, source) > 0
+}
+
 /// "During your turn, this creature has [keyword]" (CR 604.1, 613.1f) as a static ability's `StaticDef::affects`: only the
 /// source itself, and only while its controller is the active player (CR 102.1), asked again whenever characteristics are
 /// computed. Razorkin Needlehead, Skilled Battlecarver and Thrun, Breaker of Silence use it.
