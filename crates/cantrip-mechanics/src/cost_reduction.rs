@@ -22,8 +22,7 @@ pub fn for_each_creature_card_in_your_graveyard(q: &dyn Query, _: ObjectId, play
 /// determined, the cards as they are in the graveyard, an artifact, battle, creature, enchantment, land or planeswalker card each.
 /// Diamond Weapon prints it.
 pub fn for_each_permanent_card_in_your_graveyard(q: &dyn Query, _: ObjectId, player: PlayerId, _: Costed, _: &[Target]) -> CostDelta {
-    let cards = q.state().zone(Zone::graveyard(player)).iter().filter(|&&id| crate::targets::is_permanent_card(&q.chars(id))).count();
-    CostDelta::less(cards as u32)
+    CostDelta::less(crate::targets::permanent_cards_in_graveyard(q, player) as u32)
 }
 
 /// "This spell costs {N} less to cast if you control a [subtype]" (CR 601.2f, 118.7a): judged once, as the total cost is
