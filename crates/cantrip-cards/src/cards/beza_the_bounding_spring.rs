@@ -1,6 +1,6 @@
 use cantrip_api::*;
 use cantrip_mechanics::triggers::THIS_ENTERS;
-use cantrip_mechanics::{cards_in_hand, creatures_you_control, effects, lands_you_control, tokens};
+use cantrip_mechanics::{an_opponent_controls_more_lands, cards_in_hand, creatures_you_control, effects, tokens};
 use cantrip_oracle as oracle;
 
 /// Whether some opponent of `you` has more of `count` than you (CR 102.2). Each comparison is made as it comes in the
@@ -20,7 +20,7 @@ fn life(q: &dyn Query, player: PlayerId) -> i64 {
 /// as the ability resolves (CR 608.2c): a Treasure that is a creature counts for the third.
 fn enters(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
     let you = item.controller;
-    if an_opponent_has_more(g, you, |q, p| lands_you_control(q, p) as i64) {
+    if an_opponent_controls_more_lands(g, you) {
         tokens::create_treasure(g, you)?;
     }
     if an_opponent_has_more(g, you, life) {

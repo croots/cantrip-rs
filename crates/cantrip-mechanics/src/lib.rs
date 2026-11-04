@@ -738,6 +738,13 @@ pub fn lands_you_control(q: &dyn Query, player: PlayerId) -> usize {
     q.permanents_of(player).into_iter().filter(|&id| q.chars(id).is(CardType::Land)).count()
 }
 
+/// "An opponent controls more lands than you" (CR 102.2, 305.1): some opponent of `player` controls more lands than `player`
+/// does. Beza, the Bounding Spring and Sunstar Expansionist print it.
+pub fn an_opponent_controls_more_lands(q: &dyn Query, player: PlayerId) -> bool {
+    let mine = lands_you_control(q, player);
+    q.state().opponents(player).any(|opponent| lands_you_control(q, opponent) > mine)
+}
+
 /// Deals damage to the target in `slot`, if it is still legal.
 pub fn damage_target(g: &mut dyn Game, item: &StackItem, slot: usize, amount: u16) {
     if g.target_legal(item, slot) {
