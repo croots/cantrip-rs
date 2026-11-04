@@ -4,12 +4,6 @@ use cantrip_mechanics::triggers::{creature_you_control_deals_combat_damage_to_pl
 use cantrip_mechanics::{effects, history};
 use cantrip_oracle as oracle;
 
-/// "Create a 2/2 colorless Robot artifact creature token."
-fn create_robot(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    tokens::create(g, item.controller, &ROBOT_2_2, 1)?;
-    Ok(())
-}
-
 pub static CARD: CardDef = CardDef {
     abilities: &[
         // "One or more creatures ... deal combat damage to a player" (CR 603.2c): one trigger for each player the batch
@@ -22,7 +16,7 @@ pub static CARD: CardDef = CardDef {
         .sums_per_subject(),
         triggered(
             YOUR_END_STEP,
-            create_robot,
+            tokens::create_a_robot,
             "Void \u{2014} At the beginning of your end step, if a nonland permanent left the battlefield this turn or a spell was warped this turn, create a 2/2 colorless Robot artifact creature token.",
         )
         .condition(history::void_condition),

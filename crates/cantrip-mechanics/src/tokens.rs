@@ -196,6 +196,13 @@ pub static ROBOT_1_1: CardDef = CardDef {
     ..token!(Robot)
 };
 
+/// "Create a 2/2 colorless Robot artifact creature token." as an ability's whole effect (CR 111.1, 110.5b): one `ROBOT_2_2` for the
+/// ability's controller. Elegy Acolyte, Wedgelight Rammer and Eusocial Engineering print it; the card lists `ROBOT_2_2` in its `EXTRA`.
+pub fn create_a_robot(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    create(g, item.controller, &ROBOT_2_2, 1)?;
+    Ok(())
+}
+
 /// "Create a tapped 2/2 colorless Robot artifact creature token." as an ability's whole effect (CR 111.1, 110.5b): one
 /// `ROBOT_2_2` for the ability's controller, entering tapped. Melded Moxite and Gravpack Monoist print it; the card lists
 /// `ROBOT_2_2` in its `EXTRA`.
