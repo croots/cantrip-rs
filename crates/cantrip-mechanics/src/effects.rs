@@ -693,6 +693,17 @@ pub fn discard_hand_then_draw(g: &mut dyn Game, item: &StackItem, n: u32) -> Res
     Ok(())
 }
 
+/// "You may discard your hand. If you do, draw `n` cards" (CR 608.2c-d, 701.9): the controller is asked with `question` as it resolves; an
+/// empty hand may be discarded too, and that counts as having done it. Phyrexian Dragon Engine (three cards) and Vaultguard Trooper (two) print it.
+pub fn may_discard_hand_to_draw(g: &mut dyn Game, item: &StackItem, question: &'static Question, n: u32) -> Result<(), Suspend> {
+    let player = item.controller;
+    if ask_may(g, player, item.object, Purpose::Ask(question))? {
+        g.discard_hand(player);
+        g.draw(player, n);
+    }
+    Ok(())
+}
+
 /// "Each player discards their hand, then draws seven cards": every player, in turn order from the active player
 /// (CR 101.4), discards together and then draws; nobody is asked, a whole hand leaving nothing to choose. Wheel of Fortune
 /// and Reforge the Soul print it.

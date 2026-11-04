@@ -17,21 +17,14 @@ fn enters_from_your_graveyard(q: &dyn Query, source: ObjectId, event: &Event) ->
     }
 }
 
-/// You may discard your hand. If you do, draw three cards (an empty hand discarded still counts).
-fn rummage(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    let player = item.controller;
-    if !effects::ask_may(g, player, item.object, Purpose::Ask(&ASK))? {
-        return Ok(());
-    }
-    g.discard_hand(player);
-    g.draw(player, 3);
-    Ok(())
-}
-
 pub static CARD: CardDef = CardDef {
     abilities: &[
         unearth::ability(mana("{3}{R}{R}"), "Unearth {3}{R}{R}"),
-        triggered(when(EventMask::ZONE_CHANGE, enters_from_your_graveyard), rummage, "When this creature enters from your graveyard, you may discard your hand. If you do, draw three cards."),
+        triggered(
+            when(EventMask::ZONE_CHANGE, enters_from_your_graveyard),
+            |g, item| effects::may_discard_hand_to_draw(g, item, &ASK, 3),
+            "When this creature enters from your graveyard, you may discard your hand. If you do, draw three cards.",
+        ),
     ],
     delayed: &[unearth::EXILE],
     ..oracle::PHYREXIAN_DRAGON_ENGINE
