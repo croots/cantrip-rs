@@ -1,0 +1,36 @@
+# Chorale of the Void on Bot1's Ornithopter on turn 1, paid for with four Moxen (no Black Lotus to sacrifice): nothing has left
+# the battlefield and no spell was warped, so at the beginning of Bot1's end step the Aura is sacrificed.
+
+[Bot1 Deck]
+Mox Jet
+Mox Pearl
+Mox Ruby
+Mox Emerald
+Ornithopter
+Chorale of the Void
+Plains x14
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Mox Jet.Cast
+Bot1.Pass
+Bot1.Hand.Mox Pearl.Cast
+Bot1.Pass
+Bot1.Hand.Mox Ruby.Cast
+Bot1.Pass
+Bot1.Hand.Mox Emerald.Cast
+Bot1.Pass
+Bot1.Hand.Ornithopter.Cast
+Bot1.Pass
+Bot1.Battlefield.Mox Jet.Activate
+Bot1.Battlefield.Mox Pearl.Activate
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Battlefield.Mox Emerald.Activate
+Bot1.Hand.Chorale of the Void.Cast(Ornithopter)
+Bot1.Pass
+[T2 Bot2.Main1]
+
+[Expect]
+Bot1.Graveyard = Chorale of the Void
