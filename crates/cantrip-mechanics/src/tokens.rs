@@ -815,6 +815,13 @@ pub static HUMAN_SOLDIER: CardDef = CardDef {
     ..token!(Human Soldier)
 };
 
+/// "Create a 1/1 white Human Soldier creature token" as an ability's whole effect (CR 111.1, 701.7a): one, under its controller.
+/// Honored Knight-Captain and Knight Luminary print it.
+pub fn create_a_human_soldier(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    create(g, item.controller, &HUMAN_SOLDIER, 1)?;
+    Ok(())
+}
+
 /// The 2/2 red Rebel creature token. Glimmer Lens and Otharri, Suns' Glory make it.
 pub static REBEL: CardDef = CardDef {
     colors: Some(ColorSet::of(Color::Red)),
