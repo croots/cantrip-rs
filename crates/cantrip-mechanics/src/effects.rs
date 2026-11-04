@@ -2018,3 +2018,20 @@ pub fn first_target_gets_plus_x_second_gets_minus_x(g: &mut dyn Game, item: &Sta
         Ok(())
     })
 }
+
+/// The creature "gains 'When this creature dies, return it to the battlefield tapped under its owner's control'" until end of
+/// turn (CR 611.2a, 613.1f): the card's own delayed ability `delayed_index`, which is `return_it_tapped`, added to the creature
+/// for the rest of the turn. The caller joins it with the rest of its sentence in `Game::one_instruction`. Pain 101 and Perigee
+/// Beckoner print it.
+pub fn gain_dies_return_it_tapped_until_end_of_turn(g: &mut dyn Game, source: ObjectId, creature: ObjectId, card: &'static CardDef, delayed_index: u8) {
+    let this = g.card_id(card);
+    g.add_effect(source, creature, EffectKind::AddAbility(AbilityRef::delayed(this, delayed_index)), Duration::EndOfTurn);
+}
+
+/// "Return it to the battlefield tapped under its owner's control" (CR 110.2a, 400.7): the card as it is in the graveyard
+/// (the creature that died; each card of a merged permanent, together, CR 730.3c); a token is not a card and has ceased to exist,
+/// so there is nothing to return (the rulings). The trigger looks back (CR 603.10a). Pain 101 and Perigee Beckoner print it.
+pub fn return_it_tapped(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    return_what_it_became(g, item.object, true, &[])?;
+    Ok(())
+}
