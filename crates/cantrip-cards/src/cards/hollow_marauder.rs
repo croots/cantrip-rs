@@ -1,13 +1,6 @@
 use cantrip_api::*;
-use cantrip_mechanics::{each_discards_a_card, hand, targets, triggers};
+use cantrip_mechanics::{cost_reduction, each_discards_a_card, hand, targets, triggers};
 use cantrip_oracle as oracle;
-
-/// "This spell costs {1} less to cast for each creature card in your graveyard" (CR 601.2f, 118.7a): counted as the cost is
-/// determined, the cards as they are in the graveyard. Only the cost of casting it. Its mana value stays 7 (CR 118.7).
-fn less_per_creature_card_in_your_graveyard(q: &dyn Query, _: ObjectId, player: PlayerId, _: Costed, _: &[Target]) -> CostDelta {
-    let cards = q.state().zone(Zone::graveyard(player)).iter().filter(|&&id| q.chars(id).is(CardType::Creature)).count();
-    CostDelta::less(cards as u32)
-}
 
 /// "When this creature enters, any number of target opponents each discard a card. For each of those opponents who didn't
 /// discard a card with mana value 4 or greater, draw a card." Each target still legal as it resolves (CR 608.2b) chooses a
@@ -28,7 +21,7 @@ fn discard_then_draw(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> 
 }
 
 pub static CARD: CardDef = CardDef {
-    own_cost_changes: &[less_per_creature_card_in_your_graveyard],
+    own_cost_changes: &[cost_reduction::for_each_creature_card_in_your_graveyard],
     abilities: &[triggered(
         triggers::THIS_ENTERS,
         discard_then_draw,
