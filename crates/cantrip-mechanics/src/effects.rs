@@ -253,6 +253,19 @@ fn counters_on_each(g: &mut dyn Game, objects: &[ObjectId], kind: CounterKind, n
     g.add_counters_together(&puts);
 }
 
+/// "Put a +1/+1 counter on each other creature you control" as an ability's whole effect (CR 122.1, 608.2c, 101.4): every creature
+/// the ability's controller controls as it resolves other than its source, all at once. Monica Rambeau's Photon and Dawnstrike
+/// Vanguard print it.
+pub fn plus_one_counter_on_each_other_creature_you_control(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    let objects: Vec<ObjectId> = g
+        .permanents_of(item.controller)
+        .into_iter()
+        .filter(|&id| id != item.object && g.chars(id).is(CardType::Creature))
+        .collect();
+    counters_on_each(g, &objects, CounterKind::PlusOne, 1);
+    Ok(())
+}
+
 /// "Put `n` `kind` counters on each [subtype] you control": every permanent the ability's controller controls as it resolves
 /// that has the subtype (CR 608.2c, 205.3), the source among them, the subtype read through the words of the source's text
 /// (CR 612.2); all of them at once (CR 608.2, 101.4: one event, CR 603.2c). The permanents. Lyra, Archangel of Dawn
