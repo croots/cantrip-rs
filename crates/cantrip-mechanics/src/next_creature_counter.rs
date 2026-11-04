@@ -38,7 +38,8 @@ pub const DELAYED: AbilityDef = triggered(
     "When you next cast a creature spell this turn, that creature enters with an additional +1/+1 counter on it.",
 );
 
-fn spell_enters(_: &dyn Query, _: &Asker, affected: ObjectId, proposal: &Proposal) -> bool {
+/// The replacement's condition: the creature spell it is about becomes a permanent (CR 614.12), shared by every card that gives one.
+pub fn spell_enters(_: &dyn Query, _: &Asker, affected: ObjectId, proposal: &Proposal) -> bool {
     matches!(proposal, Proposal::ZoneChange(z) if z.object == affected && z.from.is(ZoneKind::Stack) && z.to.is(ZoneKind::Battlefield))
 }
 
