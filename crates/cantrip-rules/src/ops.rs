@@ -3195,10 +3195,13 @@ pub fn mill(cx: &mut Cx, player: PlayerId, count: u32) -> Vec<ObjectId> {
 /// Several players mill at once (CR 701.17, 101.4): "each player mills", "any number of target players each mill". Every
 /// count is read before any card moves - the caller works them out first - and all the cards move in one simultaneous
 /// zone change, announced as one event, so "whenever one or more cards are milled" sees one action (CR 603.2c). Each
-/// player's cards are their library's top cards, top first.
+/// player's cards are their library's top cards, top first. The effects that change how many a player mills apply to
+/// each player's number first (CR 614.1a, `replace::mill_count`), every number before any card moves; a player mills as
+/// many as their library holds (CR 701.17b).
 pub fn mill_together(cx: &mut Cx, mills: &[(PlayerId, u32)]) -> Vec<ObjectId> {
+    let counts: Vec<(PlayerId, u32)> = mills.iter().map(|&(player, count)| (player, replace::mill_count(cx, player, count))).collect();
     let mut moves: Vec<Moving> = Vec::new();
-    for &(player, count) in mills {
+    for (player, count) in counts {
         let top = cx.s().zone(Zone::library(player)).iter().take(count as usize).copied();
         moves.extend(top.map(|c| Moving::to(c, Zone::graveyard(player))));
     }
