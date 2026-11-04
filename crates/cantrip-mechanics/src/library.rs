@@ -334,6 +334,12 @@ pub fn search_aura_or_equipment_to_hand(g: &mut dyn Game, player: PlayerId, sour
     })
 }
 
+/// "Search your library for an artifact card, reveal it, put it into your hand, then shuffle" (CR 701.23). Inventors' Fair and Scour
+/// for Scrap print it.
+pub fn search_artifact_to_hand(g: &mut dyn Game, player: PlayerId, source: ObjectId) -> Result<Vec<ObjectId>, Suspend> {
+    search_to_hand(g, player, source, Find::ONE.revealed(), |q, c| q.chars(c).is(CardType::Artifact))
+}
+
 /// "Search your library for [cards], put them into your graveyard, then shuffle" (CR 701.23). Entomb and Goblin
 /// Engineer print it. Kept for existing cards; new cards
 /// use the `find_to_*` wrapper with a rule from `crate::select`.
