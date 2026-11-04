@@ -1,0 +1,80 @@
+# Systems Override {2}{R}: "Gain control of target artifact or creature until end of turn. Untap that permanent. It gains haste until end of turn. If it's a
+# Spacecraft, put ten charge counters on it. If you do, remove ten charge counters from it at the beginning of the next end step." Bot2 casts Specimen
+# Freighter (station 9+: a 4/7 flyer) and stations it once with Memnite, one charge counter, so it is no creature. On turn 3 Bot1 takes it: ten more counters
+# make eleven, so it is a 4/7 flying artifact creature under Bot1, untapped and with haste, and attacks at once (Bot2 mills four from the attack trigger).
+# At the end step exactly ten counters come off, leaving the one it had: the Freighter is back under Bot2 as no creature.
+
+[Bot1 Deck]
+Mox Ruby
+Mox Pearl
+Mox Jet
+Systems Override
+Island x20
+
+[Bot2 Deck]
+Black Lotus
+Mox Sapphire
+Mox Jet
+Mox Ruby
+Memnite
+Specimen Freighter
+Island x20
+
+[Actions]
+Bot1.Hand.Mox Ruby.Cast
+Bot1.Hand.Mox Pearl.Cast
+Bot1.Hand.Mox Jet.Cast
+Bot1.Pass
+[T2 Bot2.Main1]
+Bot2.Hand.Memnite.Cast
+Bot2.Hand.Black Lotus.Cast
+Bot2.Hand.Mox Sapphire.Cast
+Bot2.Hand.Mox Jet.Cast
+Bot2.Hand.Mox Ruby.Cast
+Bot2.Battlefield.Black Lotus.Activate(Color: Blue)
+Bot2.Battlefield.Mox Sapphire.Activate
+Bot2.Battlefield.Mox Jet.Activate
+Bot2.Battlefield.Mox Ruby.Activate
+Bot2.Hand.Specimen Freighter.Cast
+Bot2.Pass
+Bot1.Pass
+Bot2.Target()
+Bot2.Pass
+Bot1.Pass
+Bot2.Battlefield.Specimen Freighter.Activate(Ability: Station)
+Bot2.Choose(Memnite)
+Bot2.Pass
+Bot1.Pass
+? Bot2.Battlefield.Specimen Freighter.Counters.Charge = 1
+[T3 Bot1.Main1]
+Bot1.Battlefield.Mox Ruby.Activate
+Bot1.Battlefield.Mox Pearl.Activate
+Bot1.Battlefield.Mox Jet.Activate
+Bot1.Hand.Systems Override.Cast(Bot2.Battlefield.Specimen Freighter)
+Bot1.Pass
+Bot2.Pass
+? Bot1.Battlefield.Specimen Freighter.Counters.Charge = 11
+? Bot1.Battlefield.Specimen Freighter.Types = Artifact; Creature
+? Bot1.Battlefield.Specimen Freighter.Power = 4
+? Bot1.Battlefield.Specimen Freighter.Toughness = 7
+? Bot1.Battlefield.Specimen Freighter.Keywords = Flying; Haste
+? Bot1.Battlefield.Specimen Freighter.Tapped = false
+? Bot2.Library.Count = 18
+Bot1.Attack(Specimen Freighter)
+Bot1.Pass
+Bot2.Pass
+? Bot2.Library.Count = 14
+[T3 Bot1.End]
+? Bot1.Battlefield.Specimen Freighter.Counters.Charge = 11
+Bot1.Pass
+Bot2.Pass
+? Bot1.Battlefield.Specimen Freighter.Counters.Charge = 1
+? Bot1.Battlefield.Specimen Freighter.Types = Artifact
+[T4 Bot2.Main1]
+
+[Expect]
+Bot2.Life = 16
+Bot2.Battlefield.Specimen Freighter.Counters.Charge = 1
+Bot2.Battlefield.Specimen Freighter.Types = Artifact
+Bot2.Battlefield.Specimen Freighter.Keywords = (absent)
+Bot1.Battlefield = Mox Jet; Mox Pearl; Mox Ruby
