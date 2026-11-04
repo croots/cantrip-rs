@@ -21,18 +21,10 @@ fn you_sacrifice_a_token(q: &dyn Query, me: &Asker, event: &Event) -> Option<Fir
     if q.obj(sacrificed).token { Fired::PLAIN } else { None }
 }
 
-/// "Target opponent loses 1 life." (CR 119.3.) A target that is gone loses nothing (CR 608.2b).
-fn opponent_loses_a_life(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    if let Some(opponent) = targets::player(g, item, 0) {
-        g.lose_life(opponent, 1);
-    }
-    Ok(())
-}
-
 pub static CARD: CardDef = CardDef {
     abilities: &[
         triggered(triggers::THIS_ENTERS, sacrifice_for_a_card, "When The Sackville-Bagginses enter, you may sacrifice another creature or artifact. If you do, draw a card and create a Treasure token."),
-        triggered(when_asked(EventMask::ZONE_CHANGE, you_sacrifice_a_token), opponent_loses_a_life, "Whenever you sacrifice a token, target opponent loses 1 life.")
+        triggered(when_asked(EventMask::ZONE_CHANGE, you_sacrifice_a_token), effects::target_player_loses_life::<1>, "Whenever you sacrifice a token, target opponent loses 1 life.")
             .targets(&[targets::OPPONENT])
             .on_sacrifice(),
     ],
