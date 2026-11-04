@@ -144,6 +144,12 @@ pub fn void(q: &dyn Query) -> bool {
         || crate::warp::spell_was_warped_this_turn(q)
 }
 
+/// `void` as the `condition` of a triggered ability (CR 603.4): void's intervening "if", checked as the trigger event happens
+/// and again as the ability resolves. Elegy Acolyte and Kavaron Skywarden print it at the beginning of the end step.
+pub fn void_asked(q: &dyn Query, _: &Asker) -> bool {
+    void(q)
+}
+
 /// Cards (not tokens) that left `player`'s graveyard this turn (Gau, Feral Youth; Wilt in the Heat).
 pub fn cards_left_graveyard_this_turn(q: &dyn Query, player: PlayerId) -> usize {
     q.history()
