@@ -1181,6 +1181,35 @@ pub fn create_a_landfall_bird(g: &mut dyn Game, controller: PlayerId) -> Result<
     Ok(())
 }
 
+fn wizard_ping(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    crate::effects::damage_each_opponent(g, item, 1);
+    Ok(())
+}
+
+/// The 0/1 black Wizard creature token with "Whenever you cast a noncreature spell, this token deals 1 damage to each opponent."
+/// (CR 111.1, 603.2): the ping is the token's own ability. Lindblum, Industrial Regency's Mage Siege and Mysidian Elder make it.
+pub static WIZARD: CardDef = CardDef {
+    colors: Some(ColorSet::of(Color::Black)),
+    types: TypeSet::of(&[CardType::Creature]),
+    power: Some(0),
+    toughness: Some(1),
+    abilities: &[triggered(
+        crate::triggers::NONCREATURE_SPELL_YOU_CAST,
+        wizard_ping,
+        "Whenever you cast a noncreature spell, this token deals 1 damage to each opponent.",
+    )],
+    text: "Whenever you cast a noncreature spell, this token deals 1 damage to each opponent.",
+    ..token!(Wizard)
+};
+
+/// "Create a 0/1 black Wizard creature token with 'Whenever you cast a noncreature spell, this token deals 1 damage to each
+/// opponent.'" as an ability's whole effect (CR 111.1, 701.7a): one, under its controller. The card file lists `tokens::WIZARD`
+/// in its `EXTRA`. Lindblum, Industrial Regency's Mage Siege and Mysidian Elder print it.
+pub fn create_a_wizard(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    create(g, item.controller, &WIZARD, 1)?;
+    Ok(())
+}
+
 /// The 0/0 green and blue Fractal creature token. Oracle's Gift (Jadzi, Steward of Fate) and Fractal Anomaly make it.
 pub static FRACTAL: CardDef = CardDef {
     colors: Some(ColorSet(ColorSet::of(Color::Green).0 | ColorSet::of(Color::Blue).0)),
