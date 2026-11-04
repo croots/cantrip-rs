@@ -562,6 +562,19 @@ pub fn differently_named_lands(q: &dyn Query, player: PlayerId) -> usize {
     crate::select::largest_name_set(&names).len()
 }
 
+/// "This spell costs {X} less to cast, where X is the number of differently named lands you control" (CR 601.2f, 118.7a) as an
+/// `own_cost_changes` entry: a generic reduction of the spell's casting cost, the land count read as the total cost is
+/// determined. Cloak and Phaser and Fungal Colossus print it.
+pub fn spell_costs_x_less_where_x_is_differently_named_lands(
+    q: &dyn Query,
+    _: ObjectId,
+    player: PlayerId,
+    _: Costed,
+    _: &[Target],
+) -> CostDelta {
+    CostDelta::less(differently_named_lands(q, player) as u32)
+}
+
 /// "[This creature]'s power and toughness are each equal to the number of lands you control" as the `StaticDef::apply` of the
 /// ability (CR 613.4a for a characteristic-defining one, CR 604.3; layer 7b for one an effect gave, CR 613.4b), read live
 /// (CR 611.3a). "You" is the controller of `source` (see `count_you_control`). Beorn's Hospitality (given), Lumra, Bellow of the
