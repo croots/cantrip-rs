@@ -836,6 +836,25 @@ pub fn create_a_human_soldier(g: &mut dyn Game, item: &StackItem) -> Result<(), 
     Ok(())
 }
 
+/// The 1/1 colorless Drone artifact creature token with flying and "This token can block only creatures with flying."
+/// Pinnacle Emissary and Station Monitor make it.
+pub static DRONE: CardDef = CardDef {
+    types: TypeSet::of(&[CardType::Artifact, CardType::Creature]),
+    power: Some(1),
+    toughness: Some(1),
+    keywords: Keywords::of(&[Keyword::Flying, Keyword::CanBlockOnlyCreaturesWithFlying]),
+    text: "Flying\nThis token can block only creatures with flying.",
+    ..token!(Drone)
+};
+
+/// "Create a 1/1 colorless Drone artifact creature token with flying and \"This token can block only creatures with flying.\""
+/// as an ability's whole effect (CR 111.1, 701.7a): one `DRONE` under its controller. Pinnacle Emissary and Station Monitor
+/// print it; the card lists `DRONE` in its `EXTRA`.
+pub fn create_a_drone(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    create(g, item.controller, &DRONE, 1)?;
+    Ok(())
+}
+
 /// The 2/2 red Rebel creature token. Glimmer Lens and Otharri, Suns' Glory make it.
 pub static REBEL: CardDef = CardDef {
     colors: Some(ColorSet::of(Color::Red)),
