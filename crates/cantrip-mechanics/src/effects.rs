@@ -1587,6 +1587,15 @@ pub fn target_creature_cant_be_blocked_this_turn(g: &mut dyn Game, item: &StackI
     Ok(())
 }
 
+/// "[Target creature] has base power and toughness P/T until end of turn" (CR 613.4b, layer 7b, 611.2): the target in `slot`, if it
+/// is still a legal target as the ability resolves (CR 608.2b). It overwrites earlier base-setting effects and leaves counters and
+/// modifiers applying. Perfected Theory, Multiply by Zero and Atomic Microsizer print it.
+pub fn target_has_base_pt_until_end_of_turn(g: &mut dyn Game, item: &StackItem, slot: usize, power: i16, toughness: i16) {
+    if let Some(creature) = crate::targets::object(g, item, slot) {
+        g.add_effect(item.object, creature, EffectKind::SetPt(power, toughness), Duration::EndOfTurn);
+    }
+}
+
 /// "This creature can't be blocked this turn" (CR 509.1b, 611.2): an effect on the source creature itself, for as long as it stays the
 /// same permanent (CR 611.2c, 400.7). Matterbending Mage and Snooping Page print it.
 pub fn this_cant_be_blocked_this_turn(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
