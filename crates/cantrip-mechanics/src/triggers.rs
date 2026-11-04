@@ -1721,7 +1721,8 @@ pub fn creature_you_control_deals_combat_damage_to_player(q: &dyn Query, me: &As
 }
 
 /// `creature_you_control_deals_combat_damage_to_player` for an ability that refers to the damage ("that many", "that
-/// much"): the player is the trigger's subject and the amount of that creature's damage its `data[0]`. Starwinder prints it.
+/// much"): the player is the trigger's subject and the amount of that creature's damage its `data[0]`. Starwinder and Old Gnawbone
+/// ("create that many Treasure tokens") print it.
 pub fn creature_you_control_deals_combat_damage_to_player_for_amount(q: &dyn Query, me: &Asker, event: &Event) -> Option<Fired> {
     match event {
         Event::Damage { source: from, target: Target::Player(p), amount, kind, .. }

@@ -957,9 +957,9 @@ pub fn defending_player_mills<const N: u32>(g: &mut dyn Game, item: &StackItem) 
     Ok(())
 }
 
-/// "Return [up to N] target [permanents] to their owners' hands": those still legal as it resolves go together, as one event
-/// (CR 608.2b, 400.7); none chosen or still legal, nothing happens. Marang River Regent, This Town Ain't Big Enough, Atlantis
-/// Attacks and Specimen Freighter print it.
+/// "Return [up to N] target [permanents or cards] to their owners' hands": those still legal as it resolves go together, as one
+/// event (CR 608.2b, 400.7); none chosen or still legal, nothing happens. Marang River Regent, This Town Ain't Big Enough,
+/// Atlantis Attacks, Specimen Freighter, Leave (Leave // Chance) and Loamcrafter Faun (cards in a graveyard) print it.
 pub fn return_targets_to_hand(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
     let returned = crate::targets::legal_objects(g, item);
     g.return_to_hand(&returned);

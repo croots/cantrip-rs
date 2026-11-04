@@ -16,8 +16,8 @@ pub fn attach_to_target(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspen
 
 /// "Attach it to target creature you control. That creature gains [a keyword] until end of turn" (CR 701.3a, 608.2b, 611.2a): if
 /// the target is no longer legal the whole ability does nothing; otherwise the creature gains the keyword whether or not the
-/// Equipment is still there to be attached (CR 400.7). The three wrappers are the fn pointers an ability's effect takes; Stolen
-/// Stark Tech prints indestructible, Barbed Bloodletter wither and Squire's Lightblade first strike.
+/// Equipment is still there to be attached (CR 400.7). The wrappers are the fn pointers an ability's effect takes; Stolen
+/// Stark Tech prints indestructible, Barbed Bloodletter wither, Squire's Lightblade first strike and Illvoi Light Jammer hexproof.
 fn attach_to_target_which_gains(g: &mut dyn Game, item: &StackItem, keyword: Keyword) -> Result<(), Suspend> {
     attach_to_target(g, item)?;
     if let Some(creature) = targets::object(g, item, 0) {

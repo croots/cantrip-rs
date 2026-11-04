@@ -649,7 +649,8 @@ pub fn counter_unless_pays(g: &mut dyn Game, item: &StackItem, slot: usize, cost
 
 /// `counter_unless_pays` that also says whether the spell's controller paid, for "Counter target spell unless its controller pays {2}.
 /// If they do, you create a Lander token" (CR 118.12, 608.2c): the spell and `true` if they paid, `false` if they did not (the
-/// spell is countered), `None` if the target was no longer legal. Divert Disaster prints it.
+/// spell is countered), `None` if the target was no longer legal. Divert Disaster prints it, and Power Sink ("If they don't,
+/// they tap all lands with mana abilities they control") reads the other answer.
 pub fn counter_unless_pays_reporting(g: &mut dyn Game, item: &StackItem, slot: usize, cost: ManaCost) -> Result<Option<(ObjectId, bool)>, Suspend> {
     let Some(spell) = targets::object(g, item, slot) else { return Ok(None) };
     let payer = g.controller(spell);

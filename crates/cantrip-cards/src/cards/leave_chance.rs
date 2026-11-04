@@ -8,10 +8,6 @@ fn permanent_you_own(q: &dyn Query, asker: &Asker, t: Target) -> bool {
 }
 
 /// Leave: "Return any number of target permanents you own to your hand."
-fn leave(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    g.return_to_hand(&cantrip_mechanics::targets::legal_objects(g, item));
-    Ok(())
-}
 
 /// Chance: "Discard any number of cards, then draw that many cards."
 fn chance(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
@@ -19,7 +15,7 @@ fn chance(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
 }
 
 pub static LEAVE: CardDef = CardDef {
-    spell: spell(&[up_to(TargetSpec::ANY_NUMBER, permanent_you_own)], leave),
+    spell: spell(&[up_to(TargetSpec::ANY_NUMBER, permanent_you_own)], effects::return_targets_to_hand),
     ..oracle::LEAVE
 };
 
