@@ -745,6 +745,13 @@ fn top_take_one_rest_to_graveyard(
     Ok(())
 }
 
+/// "Mill `N` cards" as a resolving ability's whole effect (CR 701.17a): the controller puts the top `N` cards of their library
+/// into their graveyard, as many as it has. Aftermath Analyst and Awaken the Honored Dead (three) and Summon: Titan (five) print it.
+pub fn mill<const N: u32>(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    g.mill(item.controller, N);
+    Ok(())
+}
+
 /// "Mill `count` cards. You may put a [`kind`] card from among them into your hand" (CR 701.17, 701.17c): the cards milled
 /// are the ones it may take from, as they are where they went (a graveyard, or exile by a replacement effect); `wanted`
 /// says which of them qualify, `kind` is how the question words it. Nobody is asked when none qualifies, and choosing none
