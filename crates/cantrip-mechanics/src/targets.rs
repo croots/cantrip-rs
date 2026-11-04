@@ -403,6 +403,14 @@ fn noncreature_artifact_filter(q: &dyn Query, _: &Asker, t: Target) -> bool {
 /// Crush, Blinkmoth Well and HULK SMASH! print it.
 pub const NONCREATURE_ARTIFACT: TargetSpec = target(noncreature_artifact_filter);
 
+fn noncreature_permanent_filter(q: &dyn Query, _: &Asker, t: Target) -> bool {
+    matches!(t, Target::Object(id) if q.is_on_battlefield(id) && !q.chars(id).is(CardType::Creature))
+}
+
+/// "Target noncreature permanent" (CR 115.1): a permanent on the battlefield that is not a creature, as the layers have it (a
+/// Spacecraft below its station threshold is one). Woodfall Primus and Extinguisher Battleship print it.
+pub const NONCREATURE_PERMANENT: TargetSpec = target(noncreature_permanent_filter);
+
 /// "... that player controls" in a slot of "for each opponent, up to one target [permanent] that player controls" (CR 601.2c, 115.1): a
 /// permanent on the battlefield controlled by the opponent whose slot (`TargetSpec::EACH_OPPONENT`) is being chosen or checked, which
 /// the core says through `Query::slot_opponent`. A slot's filter adds the kind of permanent. The Theorist, Jace Beleren's minus two and
