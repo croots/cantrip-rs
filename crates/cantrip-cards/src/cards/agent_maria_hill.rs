@@ -12,17 +12,10 @@ fn this_is_tapped_to_pay_a_teamwork_cost(_: &dyn Query, source: ObjectId, event:
     }
 }
 
-/// "Put a +1/+1 counter on her and draw a card." (CR 122.1, 121.1): both, in one sentence; the counter only if she is still the
-/// object that was tapped (CR 400.7), the card whatever became of her.
-fn counter_and_draw(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    g.add_counters(item.object, CounterKind::PlusOne, 1);
-    effects::draw(g, item, 1)
-}
-
 pub static CARD: CardDef = CardDef {
     abilities: &[triggered(
         when(EventMask::TAPPED_FOR_TEAMWORK, this_is_tapped_to_pay_a_teamwork_cost),
-        counter_and_draw,
+        effects::plus_one_counter_on_this_and_draw_a_card,
         "Whenever Agent Maria Hill becomes tapped to pay a teamwork cost, put a +1/+1 counter on her and draw a card.",
     )],
     ..oracle::AGENT_MARIA_HILL

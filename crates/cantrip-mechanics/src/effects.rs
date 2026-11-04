@@ -326,6 +326,14 @@ pub fn plus_one_counter_on_this(g: &mut dyn Game, item: &StackItem) -> Result<()
     Ok(())
 }
 
+/// "Put a +1/+1 counter on [this creature] and draw a card" (CR 122.1, 121.1): both in one sentence; the counter only if the
+/// source is still the object that triggered (CR 400.7), the card whatever became of it. Agent Maria Hill, Wan Shi Tong,
+/// Librarian and Sunstar Lightsmith print it.
+pub fn plus_one_counter_on_this_and_draw_a_card(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    g.add_counters(item.object, CounterKind::PlusOne, 1);
+    draw(g, item, 1)
+}
+
 /// "Put two +1/+1 counters on [this permanent]" (CR 122.1, 201.5): the ability's source, not a new object once it has
 /// left the battlefield (CR 400.7). The whole effect of a trigger or ability of Brave Brawler, Demon Wall, Knight of Autumn,
 /// Loki Laufeyson, Serpent Specialist, Titanbones, Towering Heart, Viv Vision, Teen Synthezoid, Volcanic Villain and Ygra,
