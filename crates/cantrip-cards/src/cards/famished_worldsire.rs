@@ -6,7 +6,7 @@ use cantrip_oracle as oracle;
 /// battlefield tapped, then shuffle." X is worked out once, as the ability resolves (ruling 2025-07-25): the power it has then, with
 /// the +1/+1 counters it devoured in with and anything else on it.
 fn look_for_lands(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    let x = g.chars(item.object).power.unwrap_or(0).max(0) as usize;
+    let x = g.chars(item.object).power.unwrap_or_default().max(0) as usize;
     effects::look_at_top_put_any_lands_onto_the_battlefield_tapped_then_shuffle(g, item.controller, item.object, x)
 }
 
