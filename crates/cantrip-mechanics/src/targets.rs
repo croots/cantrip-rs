@@ -1245,6 +1245,15 @@ pub mod filters {
     pub fn another_artifact(q: &dyn Query, asker: &Asker, id: ObjectId) -> bool {
         id != asker.source && artifact(q, asker, id)
     }
+    /// "An artifact or land" (CR 701.21a): a permanent that is either. Marwyn, the Clearcutter sacrifices one.
+    pub fn artifact_or_land(q: &dyn Query, asker: &Asker, id: ObjectId) -> bool {
+        artifact(q, asker, id) || land(q, asker, id)
+    }
+    /// "Another artifact or land" (CR 109.1, 701.21a): `artifact_or_land` other than the source of the cost. Slagdrill Scrapper
+    /// sacrifices one (an artifact land counts).
+    pub fn another_artifact_or_land(q: &dyn Query, asker: &Asker, id: ObjectId) -> bool {
+        id != asker.source && artifact_or_land(q, asker, id)
+    }
     /// A nontoken artifact. Thopter Foundry sacrifices one.
     pub fn nontoken_artifact(q: &dyn Query, _: &Asker, id: ObjectId) -> bool {
         super::is_nontoken_artifact(q, id)
