@@ -236,6 +236,13 @@ pub fn tap_attached(g: &mut dyn Game, item: &StackItem) -> Option<ObjectId> {
     Some(creature)
 }
 
+/// "When this Aura enters, tap enchanted creature / permanent" (CR 303.4m, 608.2h): the whole effect of that triggered
+/// ability, as the function an ability takes. Frozen in Ice and Tractor Beam print it.
+pub fn tap_enchanted(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    tap_attached(g, item);
+    Ok(())
+}
+
 /// Living weapon (CR 702.92a): create a 0/0 black Phyrexian Germ creature token, then attach this Equipment to it.
 /// The Equipment attaches only if it is still on the battlefield and the token was made (CR 701.3b). Nettlecyst and
 /// Kaldra Compleat print it.
