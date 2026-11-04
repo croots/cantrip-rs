@@ -1176,6 +1176,18 @@ pub fn may_draw_a_card(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend
     Ok(())
 }
 
+const MAY_DRAW_THAT_MANY: Question = Question::new("Draw", "draw that many cards?", "One for each point of damage", "Draw", "Don't draw");
+
+/// "You may draw that many cards" (CR 121.3, 608.2d): the trigger's `data[0]` is the number ("that many", the damage
+/// dealt); asked of the ability's controller, not offered a player who can't draw that many (`may_draw`). Starwinder and
+/// Cold-Eyed Selkie print it.
+pub fn may_draw_that_many(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    if item.data[0] > 0 {
+        may_draw(g, item.controller, item.object, item.data[0], &MAY_DRAW_THAT_MANY)?;
+    }
+    Ok(())
+}
+
 const MAY_LOOT: Question = Question::new("Draw", "draw a card?", "If you do, discard a card", "Draw and discard", "Don't draw");
 
 /// "You may draw a card. If you do, discard a card" (CR 121.3, 608.2c): the choice is not offered a player who can't draw
