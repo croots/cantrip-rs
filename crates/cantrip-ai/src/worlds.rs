@@ -180,6 +180,16 @@ pub fn determinize_owned(game: &mut Game, k: &Knowledge, seat: PlayerId, mode: I
                 ZoneKind::Sideboard => Origin::Sideboard,
                 _ => continue,
             };
+            // The cards merged with a permanent (CR 730.2, 702.140c) have no row of their own: they are its components, on
+            // the battlefield for every seat to see, so each is that card in every world. A creature merges only over or
+            // under one with the same owner (CR 702.140a), the owner of the cards that merged.
+            if let Some(&(_, at)) = s.merged_objects.iter().find(|m| m.0 == id) {
+                if let Some(merge) = at.checked_sub(1).and_then(|i| s.merges.get(i as usize)) {
+                    for part in merge.parts.iter().filter(|part| !part.token) {
+                        accounted.entry((o.owner, origin)).or_default().push(front(game, part.card));
+                    }
+                }
+            }
             let library = o.zone.is(ZoneKind::Library);
             let known = k.knows(id);
             // A row the object was before and the seat saw (a card of its hand shuffled back by a mulligan, a card
