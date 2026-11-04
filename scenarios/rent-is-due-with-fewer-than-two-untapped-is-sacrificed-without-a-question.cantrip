@@ -1,0 +1,29 @@
+# Rent Is Due: with only one untapped creature or Treasure there is nothing to tap two of, so "otherwise" applies with no question asked.
+# Bot1 has one Ornithopter and Mox Pearl (an artifact, not a creature or Treasure): Rent Is Due is sacrificed and nothing is drawn.
+
+[Bot1 Deck]
+Rent Is Due
+Mox Pearl
+Ornithopter
+Plains x20
+
+[Bot2 Deck]
+Island x20
+
+[Actions]
+Bot1.Hand.Mox Pearl.Cast
+Bot1.Hand.Ornithopter.Cast
+Bot1.Battlefield.Mox Pearl.Activate
+Bot1.Hand.Rent Is Due.Cast
+Bot1.Pass
+Bot2.Pass
+[T1 Bot1.End]
+Bot1.Pass
+Bot2.Pass
+
+[Expect]
+Bot1.Battlefield.Rent Is Due = (absent)
+Bot1.Graveyard.Count = 1
+Bot1.Battlefield.Ornithopter.Tapped = false
+Bot1.Hand.Count = 4
+Stack.Count = 0
