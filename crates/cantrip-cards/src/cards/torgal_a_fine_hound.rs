@@ -54,7 +54,8 @@ pub static CARD: CardDef = CardDef {
         ReplacementKind::ZoneChange,
         spell_enters,
         add_a_counter_for_each_dog_or_wolf,
-        "that creature enters with an additional +1/+1 counter on it for each Dog and/or Wolf you control.",
-    )],
+        "enters with an additional +1/+1 counter",
+    )
+    .text("that creature enters with an additional +1/+1 counter on it for each Dog and/or Wolf you control.")],
     ..oracle::TORGAL_A_FINE_HOUND
 };
