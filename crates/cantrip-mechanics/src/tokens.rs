@@ -196,6 +196,14 @@ pub static ROBOT_1_1: CardDef = CardDef {
     ..token!(Robot)
 };
 
+/// "Create a tapped 2/2 colorless Robot artifact creature token." as an ability's whole effect (CR 111.1, 110.5b): one
+/// `ROBOT_2_2` for the ability's controller, entering tapped. Melded Moxite and Gravpack Monoist print it; the card lists
+/// `ROBOT_2_2` in its `EXTRA`.
+pub fn create_a_tapped_robot(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    create_by_rule(g, item.controller, &ROBOT_2_2, 1, true)?;
+    Ok(())
+}
+
 /// A colorless 2/2 Robot artifact creature token. Melded Moxite and Pinnacle Starcage create it. It shares its name with
 /// the 1/1 Robot, a definition of its own.
 pub static ROBOT_2_2: CardDef = CardDef {
