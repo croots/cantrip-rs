@@ -1,12 +1,7 @@
 use cantrip_api::*;
 use cantrip_mechanics::attach::{attached_object, equip};
-use cantrip_mechanics::statics::plus_pt;
+use cantrip_mechanics::statics::{have_reach, plus_pt};
 use cantrip_oracle as oracle;
-
-/// "Equipped creature ... has reach" (CR 702.17, 613.1f) as a static ability's `StaticDef::apply`.
-fn have_reach(_: &dyn LayerQuery, _: ObjectId, chars: &mut Chars) {
-    chars.keywords = chars.keywords.with(Keyword::Reach);
-}
 
 /// "Whenever equipped creature becomes tapped" (CR 701.26a, 603.2): the creature this Equipment is attached to is tapped, by any
 /// path that taps it. The creature is the trigger's subject, the source of the damage.
