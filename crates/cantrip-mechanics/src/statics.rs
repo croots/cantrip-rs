@@ -301,6 +301,12 @@ pub fn have_deathtouch(_: &dyn LayerQuery, _: ObjectId, chars: &mut Chars) {
     chars.keywords = chars.keywords.with(Keyword::Deathtouch);
 }
 
+/// "... has lifelink" (CR 702.15, layer 6) as a static ability's `StaticDef::apply`. Lyra Dawnbringer's Angels, Regal Caracal's Cats,
+/// Sheltered by Ghosts' enchanted creature, Dain's Company and Lumen-Class Frigate at 12+ charge print it.
+pub fn have_lifelink(_: &dyn LayerQuery, _: ObjectId, chars: &mut Chars) {
+    chars.keywords = chars.keywords.with(Keyword::Lifelink);
+}
+
 /// "... has deathtouch and lifelink" (CR 702.2, 702.15, layer 6) as a static ability's `StaticDef::apply`. Basilisk Collar's and
 /// Dissection Tools' equipped creature.
 pub fn have_deathtouch_and_lifelink(_: &dyn LayerQuery, _: ObjectId, chars: &mut Chars) {
