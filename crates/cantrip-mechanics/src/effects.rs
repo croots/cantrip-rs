@@ -1709,6 +1709,15 @@ pub fn first_target_gains_flying(g: &mut dyn Game, item: &StackItem) -> Result<(
     Ok(())
 }
 
+/// "Target creature gains deathtouch until end of turn" (CR 702.2, 611.2a): the ability's or mode's first target, the creature
+/// itself or another one as its target filter says. A target no longer legal gains nothing (CR 608.2b). Widow's Bite, Shredder,
+/// Unrelenting and Blooming Stinger print it.
+pub fn first_target_gains_deathtouch(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    let Some(creature) = crate::targets::object(g, item, 0) else { return Ok(()) };
+    gain_until_end_of_turn(g, item.object, creature, Keyword::Deathtouch);
+    Ok(())
+}
+
 /// "This creature gains first strike until end of turn" (CR 702.7a): `this_gains_until_end_of_turn` for first strike.
 pub fn this_gains_first_strike(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
     this_gains_until_end_of_turn(g, item, Keyword::FirstStrike)
