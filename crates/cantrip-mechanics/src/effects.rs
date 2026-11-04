@@ -94,6 +94,14 @@ pub fn target_creature_gets_and_gains_haste<const P: i16, const T: i16>(g: &mut 
     Ok(())
 }
 
+/// "Target creature gains haste until end of turn" (CR 611.2a, 702.10): the ability's first target, nothing if it is no longer a
+/// legal target as the ability resolves (CR 608.2b). Warren Torchmaster's reflexive ability and Taxi Driver print it.
+pub fn target_creature_gains_haste(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
+    let Some(creature) = crate::targets::object(g, item, 0) else { return Ok(()) };
+    crate::haste_until_end_of_turn(g, item.object, creature);
+    Ok(())
+}
+
 /// "One or two target creatures each get +`P`/+`T` until end of turn" (CR 611.2a): every target still legal as the spell
 /// resolves (CR 608.2b), pumped as one instruction. Appeal to Eirdu (+2/+1), Opera Love Song's mode (+2/+0) and Spiritcall
 /// Enthusiast's Scrollboost (+2/+2) print it.
