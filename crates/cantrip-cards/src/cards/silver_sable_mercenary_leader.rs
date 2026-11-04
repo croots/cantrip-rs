@@ -5,12 +5,11 @@ use cantrip_mechanics::{effects, targets};
 use cantrip_oracle as oracle;
 
 /// "Target modified creature you control gains lifelink until end of turn" (CR 700.9, 702.15, 611.2a). The target is chosen as the
-/// ability goes on the stack, so it must be modified then; once chosen it gains lifelink if it is still a legal target as this
-/// resolves (CR 608.2b), modified or not by then.
+/// ability goes on the stack, so it must be modified then, and it is checked again as this resolves (CR 608.2b): one that is no
+/// longer modified, or no longer yours, is an illegal target and gains nothing.
 fn modified_creature_gains_lifelink(g: &mut dyn Game, item: &StackItem) -> Result<(), Suspend> {
-    if let Some(creature) = targets::object(g, item, 0) {
-        effects::gain_lifelink_until_end_of_turn(g, item.object, creature);
-    }
+    let Some(creature) = targets::object(g, item, 0) else { return Ok(()) };
+    effects::gain_lifelink_until_end_of_turn(g, item.object, creature);
     Ok(())
 }
 
