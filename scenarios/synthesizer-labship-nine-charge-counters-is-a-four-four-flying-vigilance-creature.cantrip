@@ -1,4 +1,4 @@
-# Synthesizer Labship, station 9+: "Flying, vigilance" and the 4/4 box (CR 721.2b). Bot1 charges it with Lodestone Golem (5) and Dauntless Scrapbot (3) on turn 3 and Memnite (1) on turn 5: at 8 counters it is no creature; the ninth makes it a 4/4 artifact creature with flying and vigilance, which attacks and stays untapped. The 2+ ability still works there, so at the beginning of combat Dauntless Scrapbot, already a 3/3 Robot creature, becomes a 2/2 flying one and stays a Robot (the ruling: it overwrites the base power and toughness), and the Labship itself is not a legal "other" artifact (CR 115.1).
+# Synthesizer Labship, station 9+: "Flying, vigilance" and the 4/4 box (CR 721.2b). Bot1 charges it with Lodestone Golem (5) and Dauntless Scrapbot (3) on turn 3 and Memnite (1) on turn 5: at 8 counters it is no creature; the ninth makes it a 4/4 artifact creature with flying and vigilance, which attacks and stays untapped. The 2+ ability still works there, so at the beginning of combat Dauntless Scrapbot, already a 3/3 Robot creature, becomes a 2/2 flying one and stays a Robot (the ruling: it overwrites the base power and toughness), and the Labship itself is not a legal "other" artifact (CR 115.1), nor are two artifacts one answer ("up to one").
 
 [Bot1 Deck]
 Black Lotus
@@ -55,6 +55,7 @@ Bot2.Pass
 ? Bot1.Battlefield.Synthesizer Labship.Toughness = 4
 ? Bot1.Battlefield.Synthesizer Labship.Keywords = Flying; Vigilance
 ! Bot1.Target(Bot1.Battlefield.Synthesizer Labship)
+! Bot1.Target(Bot1.Battlefield.Dauntless Scrapbot; Bot1.Battlefield.Mox Pearl)
 Bot1.Target(Bot1.Battlefield.Dauntless Scrapbot)
 [T5 Bot1.BeginCombat]
 Bot1.Pass
